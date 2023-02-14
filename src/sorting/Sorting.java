@@ -15,8 +15,28 @@ public class Sorting {
      */
     public static void main(String[] args) {
         //                        0 1 2 3 4 5 6 7 8 9 
-        int[] numeros = new int[]{2,4,7,3,8,4,9,1,0,6};
+        int[] numeros = new int[]{1, 57, 38, 30, 90, 17, 87, 16, 89, 76};
         
+        System.out.print("Antes:\t");
+        printar(numeros);
+        
+        // atravessa cada par de numeros
+        for(int i = 0;i < numeros.length-1; i++)
+        {
+            int atual = i;
+            int prox = i+1;
+            
+            // Se não está em ordem
+            if(numeros[atual] > numeros[prox])
+            {
+                // Troca
+                int temp = numeros[prox];
+                numeros[prox] = numeros[atual];
+                numeros[atual] = temp;
+            }
+        }
+        
+        System.out.print("Depois:\t");
         printar(numeros);
     }
     
