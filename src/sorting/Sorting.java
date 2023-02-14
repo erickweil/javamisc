@@ -20,21 +20,27 @@ public class Sorting {
         System.out.print("Antes:\t");
         printar(numeros);
         
-        // atravessa cada par de numeros
-        for(int i = 0;i < numeros.length-1; i++)
-        {
-            int atual = i;
-            int prox = i+1;
-            
-            // Se não está em ordem
-            if(numeros[atual] > numeros[prox])
+        int ntrocas;
+        do {
+            ntrocas = 0;
+            // atravessa cada par de numeros
+            for(int i = 0;i < numeros.length-1; i++)
             {
-                // Troca
-                int temp = numeros[prox];
-                numeros[prox] = numeros[atual];
-                numeros[atual] = temp;
+                int atual = i;
+                int prox = i+1;
+
+                // Se não está em ordem
+                if(numeros[atual] > numeros[prox])
+                {
+                    // Troca
+                    int temp = numeros[prox];
+                    numeros[prox] = numeros[atual];
+                    numeros[atual] = temp;
+                    ntrocas++;
+                }
             }
         }
+        while(ntrocas > 0);
         
         System.out.print("Depois:\t");
         printar(numeros);
