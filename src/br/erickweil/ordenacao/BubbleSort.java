@@ -1,19 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-package sorting;
+package br.erickweil.ordenacao;
 
-/**
- *
- * @author erick
- */
-public class Sorting {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+public class BubbleSort {
+	public static void main(String[] args) {
         //                        0 1 2 3 4 5 6 7 8 9 
         int[] numeros = new int[40000];
         for(int k =0;k < numeros.length; k++)
@@ -36,7 +24,7 @@ public class Sorting {
                 int atual = i;
                 int prox = i+1;
 
-                // Se não está em ordem
+                // Se nÃ£o estÃ¡ em ordem
                 if(numeros[atual] > numeros[prox])
                 {
                     // Troca
@@ -55,7 +43,7 @@ public class Sorting {
         printar(numeros);
         
         double tempoDiff = (tempoFim - tempoInicio)/1000000.0;
-        System.out.printf("Tempo de Execução: %.2f milissegundos \n",tempoDiff);
+        System.out.printf("Tempo de ExecuÃ§Ã£o: %.2f milissegundos \n",tempoDiff);
         
         
     }
@@ -67,5 +55,4 @@ public class Sorting {
         }
         System.out.println("");
     }
-    
 }
