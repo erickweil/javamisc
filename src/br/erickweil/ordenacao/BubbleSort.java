@@ -20,11 +20,11 @@ public class BubbleSort {
 	{
         int ntrocas;
         // O Do-While irá parar quando não houver mais trocas em uma iteração, indicando que está em ordem
-        do {
+        for(int k = numeros.length-1;k > 1; k--) {
             ntrocas = 0;
             // atravessa cada par de numeros
             // length-1 para o prox que é i+1 não passar do último índice
-            for(int i = 0;i < numeros.length-1; i++)
+            for(int i = 0;i < k; i++)
             {
                 int atual = i;
                 int prox = i+1;
@@ -40,8 +40,12 @@ public class BubbleSort {
                     ntrocas++; // Registra que aconteceu uma troca.
                 }
             }
+            
+            if(ntrocas == 0)
+            {
+            	break; // Não precisa mais repetir. já está em ordem.
+            }
         }
-        while(ntrocas > 0);
 	}
 	
 	/**
@@ -51,7 +55,7 @@ public class BubbleSort {
 	public static void main(String[] args) {
         //  0 1 2 3 4 5 6 7 8 9 
         int[] numeros = new int[1000];
-        Arrays.iniciarAleatorio(numeros, 10000);
+        Arrays.iniciarAleatorio(numeros, 500);
         
         System.out.print("Antes:\t");
         Arrays.printar(numeros);

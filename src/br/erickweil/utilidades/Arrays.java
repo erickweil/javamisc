@@ -32,7 +32,7 @@ public class Arrays {
     	
     	System.out.print("[");
     	System.out.print(arr[0]);
-        for(int k =0;k < len; k++)
+        for(int k =1;k < len; k++)
         {
         	System.out.print(", ");
             System.out.print(arr[k]);
