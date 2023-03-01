@@ -3,7 +3,7 @@ package br.erickweil.javabasico;
 public class Notas {
 
 	public static void main(String[] args) {
-		int dinheiro = 18;
+		int dinheiro = 58;
 		
 		int notas5 = dinheiro / 5;
 		dinheiro = dinheiro % 5;
