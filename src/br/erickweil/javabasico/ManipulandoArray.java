@@ -1,21 +1,35 @@
 package br.erickweil.javabasico;
 
-import java.util.Random;
-
 public class ManipulandoArray {
 	public static void main(String[] args) {
 		int[] numeros = new int[50];
 		
-		Random rdn = new Random();
-		for(int i = 0;i < numeros.length;i++)
+		for(int i = 0;i < numeros.length;i++) 
 		{
-			numeros[i] = rdn.nextInt(0, 100);
+			double aleatorio = Math.random() * 100;
+			numeros[i] = (int) aleatorio;
 		}
 		
-		for(int i = 0;i < numeros.length;i++)
+		int maior = numeros[0];
+		int menor = numeros[0];
+		int soma = 0;
+		for(int i = 0;i < numeros.length;i++) 
 		{
-			System.out.println(numeros[i]);
+			if(numeros[i] > maior)
+			{
+				maior = numeros[i];
+			}
+			if(numeros[i] < menor)
+			{
+				menor = numeros[i];
+			}
+			soma = soma + numeros[i];
 		}
+		
+		System.out.println("O maior de todos é:"+maior);
+		System.out.println("O menor de todos é:"+menor);
+		double media = soma / (double)numeros.length;
+		System.out.println("A média é:"+media);
 		
 	}
 }
