@@ -13,10 +13,11 @@ import br.erickweil.utilidades.Arrays;
  * A fazer - Outra otimização é não atravessar até o fim do array toda vez, já que cada iteração coloca 1 elemento em ordem pelo menos
  */
 
-public class BubbleSort {
+public class BubbleSort implements Ordenador{
 	
 	// Ordena o array passado, não cria outro apenas altera o que foi provido.
-	public static void ordenar(int[] numeros)
+	@Override
+	public void ordenar(int[] numeros)
 	{
         int ntrocas;
         // O Do-While irá parar quando não houver mais trocas em uma iteração, indicando que está em ordem
@@ -62,7 +63,7 @@ public class BubbleSort {
         
         long tempoInicio = System.nanoTime();
         
-        ordenar(numeros);
+        new BubbleSort().ordenar(numeros);
         
         long tempoFim = System.nanoTime();
         

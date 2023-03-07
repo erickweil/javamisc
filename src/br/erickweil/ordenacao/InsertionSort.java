@@ -2,7 +2,7 @@ package br.erickweil.ordenacao;
 
 import br.erickweil.utilidades.Arrays;
 
-public class InsertionSort {
+public class InsertionSort implements Ordenador{
 
 	// A ideia é re-inserir um elemento no array, por trocá-lo de posição
 	
@@ -16,7 +16,8 @@ public class InsertionSort {
 	// 4. inserir o elemento removido no espaço vazio que foi criado
 	
 	// Rápido quando quase todos estão já em ordem.
-	public static void ordenar(int[] numeros)
+	@Override
+	public void ordenar(int[] numeros)
 	{
 		// Começa em 1, primeiro elemento da parte não ordenada
         for(int i = 1;i < numeros.length;i++)
@@ -48,7 +49,7 @@ public class InsertionSort {
                 
         long tempoInicio = System.nanoTime();
         
-        ordenar(numeros);
+        new InsertionSort().ordenar(numeros);
         
         long tempoFim = System.nanoTime();
         
