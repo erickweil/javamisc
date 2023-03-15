@@ -2,7 +2,7 @@ package br.erickweil.ordenacao;
 
 import br.erickweil.utilidades.Arrays;
 
-public class InsertionSort {
+public class InsertionSort implements Ordenador {
 
 	// A ideia é re-inserir um elemento no array, por trocá-lo de posição
 	

@@ -13,7 +13,7 @@ import br.erickweil.utilidades.Arrays;
  * A fazer - Outra otimização é não atravessar até o fim do array toda vez, já que cada iteração coloca 1 elemento em ordem pelo menos
  */
 
-public class BubbleSort {
+public class BubbleSort implements Ordenador {
 	
 	// Ordena o array passado, não cria outro apenas altera o que foi provido.
 	public void ordenar(int[] numeros)
