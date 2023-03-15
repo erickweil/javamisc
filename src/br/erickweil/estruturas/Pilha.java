@@ -4,11 +4,11 @@ import br.erickweil.utilidades.Arrays;
 
 public class Pilha {
 	
-	public int[] array;
+	public char[] array;
 	public int topo;
 	
 	public Pilha(int capacide) {
-		array = new int[capacide];
+		array = new char[capacide];
 		topo = -1;
 	}
 	
@@ -16,7 +16,7 @@ public class Pilha {
 	 * soma 1 à topo e o array recebe o valor na posição topo
 	 * @param valor Valor que será inserido
 	 */
-	public void push(int valor) {
+	public void push(char valor) {
 		topo++;
 		array[topo] = valor;
 	}
@@ -25,8 +25,8 @@ public class Pilha {
 	 * guarda o último da pilha, que é indicado por 'topo' em uma variável,
 	 * então subtrai 1 de topo, e retorna a variável temporária
 	 */
-	public int pop() {
-		int temp = array[topo];
+	public char pop() {
+		char temp = array[topo];
 		array[topo] = 0; // ISSO NÃO É NECESSÁRIO!!
 		topo--;
 		return temp;
@@ -43,7 +43,7 @@ public class Pilha {
 	}
 	
 	// top(): retorna o elemento na posição topo em array
-	public int peek() {
+	public char peek() {
 		return array[topo];
 	}
 	
@@ -74,15 +74,15 @@ public class Pilha {
 		System.out.println("Valor de topo antes do push:"+minhaPilha.topo);
 		minhaPilha.printar();
 		
-		minhaPilha.push(1);
-		minhaPilha.push(2);
-		minhaPilha.push(3);
+		minhaPilha.push('1');
+		minhaPilha.push('2');
+		minhaPilha.push('3');
 		
 		
 		System.out.println("Valor de topo depois do push:"+minhaPilha.topo);
 		minhaPilha.printar();
 		
-		int poppado;
+		char poppado;
 		
 		poppado = minhaPilha.pop();
 		System.out.println("Fez o pop() --> "+poppado);
