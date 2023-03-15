@@ -32,6 +32,21 @@ public class Pilha {
 		return temp;
 	}
 	
+	// size(): retorna topo + 1
+	public int size() {
+		return topo + 1;
+	}
+	
+	// isEmpty(): retorna verdadeiro se topo é menor que 0
+	public boolean isEmpty() {
+		return topo < 0;
+	}
+	
+	// top(): retorna o elemento na posição topo em array
+	public int peek() {
+		return array[topo];
+	}
+	
 	public void printar() {
 		for(int i =0;i<array.length;i++) {
 			System.out.print(array[i]);
@@ -83,9 +98,6 @@ public class Pilha {
 		
 		
 		/*
-		size(): retorna topo + 1
-		isEmpty(): retorna verdadeiro se topo é menor que 0
-		top(): retorna o elemento na posição topo em array
 		*/
 	}
 
