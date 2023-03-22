@@ -2,19 +2,21 @@ package br.erickweil.ordenacao;
 
 import br.erickweil.utilidades.Arrays;
 
-public class InsertionSort implements Ordenador {
-
-	// A ideia é re-inserir um elemento no array, por trocá-lo de posição
+/**
+	<p> A ideia é re-inserir um elemento no array, por trocá-lo de posição </p>
 	
-	// A ideia é incluir um por um elementos da área não ordenada para a área ordenada.
-	// Começa considerando o primeiro elemento como uma área em ordem
+	<p> A ideia é incluir um por um elementos da área não ordenada para a área ordenada.
+	Começa considerando o primeiro elemento como uma área em ordem </p>
 		
-	// Como cada elemento é incluído:
-	// 1. o elemento é 'removido' da parte não ordenada e guardado em uma variável
-	// 2. A parte ordenada é 'expandida' para ocupar o espaço que o elemento removido liberou
-	// 3. Deslocar todos os elementos da parte ordenada maiores que o elemento removido para a direita
-	// 4. inserir o elemento removido no espaço vazio que foi criado
-	
+	<p> Como cada elemento é incluído: <br/>
+	1. o elemento é 'removido' da parte não ordenada e guardado em uma variável <br/>
+	2. A parte ordenada é 'expandida' para ocupar o espaço que o elemento removido liberou <br/>
+	3. Deslocar todos os elementos da parte ordenada maiores que o elemento removido para a direita <br/>
+	4. inserir o elemento removido no espaço vazio que foi criado <br/>
+	</p>
+ * @author Erick Leonardo Weil
+ */
+public class InsertionSort implements Ordenador {	
 	// Rápido quando quase todos estão já em ordem.
 	public void ordenar(int[] numeros)
 	{

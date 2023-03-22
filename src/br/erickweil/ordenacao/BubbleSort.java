@@ -3,16 +3,17 @@ package br.erickweil.ordenacao;
 import br.erickweil.utilidades.Arrays;
 
 /**
- * Implementação do algoritmo BubbleSort
+ * Implementação do algoritmo BubbleSort <br/>
+ *  <br/>
+ * Complexidade de tempo no pior caso: O(n²) <br/>
+ *   <br/>
+ * A ideia é atravessar cada par do array e trocar a posicao quando não estiver em ordem  <br/>
+ * repetir até que o array inteiro esteja em ordem  <br/>
+ * OK - Um otimização é parar o algoritmo assim que não houver nenhuma troca  <br/>
+ * A fazer - Outra otimização é não atravessar até o fim do array toda vez, já que cada iteração coloca 1 elemento em ordem pelo menos  <br/>
  * 
- * Complexidade de tempo no pior caso: O(n²)
- * 
- * A ideia é atravessar cada par do array e trocar a posicao quando não estiver em ordem
- * repetir até que o array inteiro esteja em ordem
- * OK - Um otimização é parar o algoritmo assim que não houver nenhuma troca
- * A fazer - Outra otimização é não atravessar até o fim do array toda vez, já que cada iteração coloca 1 elemento em ordem pelo menos
+ * @author Erick Leonardo Weil
  */
-
 public class BubbleSort implements Ordenador {
 	
 	// Ordena o array passado, não cria outro apenas altera o que foi provido.
