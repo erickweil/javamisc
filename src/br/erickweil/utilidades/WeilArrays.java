@@ -2,7 +2,7 @@ package br.erickweil.utilidades;
 
 import java.util.Random;
 
-public class Arrays {
+public class WeilArrays {
     
 	/**
 	 * Inicia o array com valores aleatórios entre 0 e maximo
@@ -13,6 +13,30 @@ public class Arrays {
 		for(int k =0;k < arr.length; k++)
         {
 			arr[k] = rdn.nextInt(maximo);
+        }
+	}
+
+	/**
+	 * Inicia o array com valores aleatórios entre 0 e maximo, sem repetir
+	 */
+	public static void iniciarAleatorioUnico(int[] arr,int maximo) {
+		Random rdn = new Random();
+		
+		for(int k =0;k < arr.length; k++)
+        {
+			int n;
+			int tentativas = 100;
+			boolean unico;
+			do {
+				unico = true;
+				n = rdn.nextInt(maximo);
+				for(int i =0;i < k; i++)
+		        {
+					if(arr[i] == n) unico = false;
+		        }
+				tentativas--;
+			} while(!unico && tentativas >= 0);
+			arr[k] = n;
         }
 	}
 	

@@ -2,7 +2,7 @@ package br.erickweil.ordenacao;
 
 import java.util.Scanner;
 
-import br.erickweil.utilidades.Arrays;
+import br.erickweil.utilidades.WeilArrays;
 
 public class GerarTempo {
 
@@ -48,7 +48,7 @@ public class GerarTempo {
 	
 	public static void testar(int n,Ordenador ord) {
         int[] numeros = new int[n];
-        Arrays.iniciarAleatorio(numeros, n*10);
+        WeilArrays.iniciarAleatorio(numeros, n*10);
         
         long tempoInicio = System.nanoTime();
         
@@ -56,7 +56,7 @@ public class GerarTempo {
         
         if(!checarOrdem(numeros)) {
         	System.out.println("Não ficou em ordem:");
-        	Arrays.printar(numeros);
+        	WeilArrays.printar(numeros);
         }
         
         long tempoFim = System.nanoTime();

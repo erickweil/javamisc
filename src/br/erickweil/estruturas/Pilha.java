@@ -1,6 +1,6 @@
 package br.erickweil.estruturas;
 
-import br.erickweil.utilidades.Arrays;
+import br.erickweil.utilidades.WeilArrays;
 
 public class Pilha {
 	

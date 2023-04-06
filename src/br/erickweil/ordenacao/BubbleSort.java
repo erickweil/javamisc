@@ -1,6 +1,6 @@
 package br.erickweil.ordenacao;
 
-import br.erickweil.utilidades.Arrays;
+import br.erickweil.utilidades.WeilArrays;
 
 /**
  * Implementação do algoritmo BubbleSort <br/>
@@ -56,10 +56,10 @@ public class BubbleSort implements Ordenador {
 	public static void main(String[] args) {
         //  0 1 2 3 4 5 6 7 8 9 
         int[] numeros = new int[1000];
-        Arrays.iniciarAleatorio(numeros, 500);
+        WeilArrays.iniciarAleatorio(numeros, 500);
         
         System.out.print("Antes:\t");
-        Arrays.printar(numeros);
+        WeilArrays.printar(numeros);
         
         long tempoInicio = System.nanoTime();
         
@@ -68,7 +68,7 @@ public class BubbleSort implements Ordenador {
         long tempoFim = System.nanoTime();
         
         System.out.print("Depois:\t");
-        Arrays.printar(numeros);
+        WeilArrays.printar(numeros);
         
         double tempoDiff = (tempoFim - tempoInicio)/1000000.0;
         System.out.printf("Tempo de Execução: %.2f milissegundos \n",tempoDiff);   

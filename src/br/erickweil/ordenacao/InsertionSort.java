@@ -1,6 +1,6 @@
 package br.erickweil.ordenacao;
 
-import br.erickweil.utilidades.Arrays;
+import br.erickweil.utilidades.WeilArrays;
 
 /**
 	<p> A ideia é re-inserir um elemento no array, por trocá-lo de posição </p>
@@ -44,9 +44,9 @@ public class InsertionSort implements Ordenador {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int[] numeros = new int[1000];
-        Arrays.iniciarAleatorio(numeros, 500);
+        WeilArrays.iniciarAleatorio(numeros, 500);
         
-        Arrays.printar(numeros);
+        WeilArrays.printar(numeros);
                 
         long tempoInicio = System.nanoTime();
         
@@ -54,7 +54,7 @@ public class InsertionSort implements Ordenador {
         
         long tempoFim = System.nanoTime();
         
-        Arrays.printar(numeros);
+        WeilArrays.printar(numeros);
         
         double tempoDiff = (tempoFim - tempoInicio)/1000000.0;
         System.out.printf("Tempo de Execução: %.2f milissegundos \n",tempoDiff);   

@@ -2,9 +2,9 @@ package br.erickweil.arvores;
 
 public class Arvore {
 
-	int valor;
-	Arvore direita;
-	Arvore esquerda;
+	public int valor;
+	public Arvore direita;
+	public Arvore esquerda;
 	
 	public Arvore(int valor, Arvore esquerda, Arvore direita) {
 		this.valor = valor;
@@ -26,11 +26,27 @@ public class Arvore {
 			// esquerda
 			if(esquerda == null) esquerda = new Arvore(valor, null, null);
 			else esquerda.adicionarElemento(valor);
-		} else {
+		} else if(valor > this.valor) {
 			// direita
 			if(direita == null) direita = new Arvore(valor, null, null);
 			else direita.adicionarElemento(valor);
 		}
+	}
+	
+	public static Arvore doArrayOrdenado(int[] arr) { 
+		return criarOrdenado(arr, 0, arr.length-1);
+	}
+	
+	public static Arvore criarOrdenado(int[] arr, int inicio, int fim) {
+		if(inicio >= fim) return null;
+		
+		int meio = (inicio + fim) / 2;
+		
+		Arvore arvore = new Arvore(arr[meio], null, null);
+		arvore.esquerda = criarOrdenado(arr, inicio, meio-1);
+		arvore.direita = criarOrdenado(arr, meio+1, fim);
+		
+		return arvore;
 	}
 	
 	public static void main(String[] args) {

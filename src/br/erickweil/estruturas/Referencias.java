@@ -8,8 +8,8 @@ public class Referencias {
 	 * E faz referência ao próximo elo, que pode ser null para inexistente
 	*/
 	public static class Elo {
-		String nome;
-		Elo proximo;
+		public String nome;
+		public Elo proximo;
 		
 		/**
 		 * Método construtor, cria o objeto com um valor para nome
@@ -28,7 +28,7 @@ public class Referencias {
 	 */
 	public static class Corrente {
 		// Atributo que armazena o primeiro elo da corrente
-		Elo primeiro;
+		public Elo primeiro;
 		
 		/**
 		 * Método que adiciona um elo na corrente. A ideia é
