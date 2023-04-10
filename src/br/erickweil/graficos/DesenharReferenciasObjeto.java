@@ -1,11 +1,17 @@
 package br.erickweil.graficos;
 
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -60,36 +66,57 @@ public class DesenharReferenciasObjeto {
 	}
 	
 	public static void main(String[] args) {
-		/*Corrente corrente = new Corrente();
+		Corrente corrente = new Corrente();
 		
 		Elo a = new Elo("A");
 		corrente.adicionarElo(a);
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
-		corrente.adicionarElo(new Elo("H"));
+		corrente.adicionarElo(new Elo("B"));
+		corrente.adicionarElo(new Elo("C"));
+		corrente.adicionarElo(new Elo("D"));
+		corrente.adicionarElo(new Elo("E"));
+		corrente.adicionarElo(new Elo("F"));
+		corrente.adicionarElo(new Elo("G"));
 		
-		a.proximo = corrente.primeiro;*/
 		
-		/*Pilha pilha = new Pilha(10);
-		pilha.push(10);
-		pilha.push(5);
-		pilha.push(2);
-		pilha.push(1);
-		pilha.push(77);*/
 		
-		Arvore arvore = DesenharArvore.gerarNovaArvore();
+		a.proximo = corrente.primeiro;
+		
+		//Pilha pilha = new Pilha(10);
+		//pilha.push(10);
+		//pilha.push(5);
+		//pilha.push(2);
+		//pilha.push(1);
+		//pilha.push(77);
+		
+		//Arvore arvore = DesenharArvore.gerarNovaArvore();
 		
 		// new Teste(new Random())
-		DesenharReferenciasObjeto des = new DesenharReferenciasObjeto(arvore);
+		DesenharReferenciasObjeto des = new DesenharReferenciasObjeto(corrente);
 		
 		String dot = des.gerarDOT();
 		
 		System.out.println(dot);
 	}
+	
+	public static void verObjeto(Object obj) {
+		try {
+			String DOT = new DesenharReferenciasObjeto(obj).gerarDOT();
+			
+			Desktop desktop = Desktop.getDesktop();
+			
+			String content = URLEncoder.encode(DOT, Charset.defaultCharset());
+			content = content.replace("+","%20");
+        
+			desktop.browse(new URI("https://dreampuf.github.io/GraphvizOnline/#"+content));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	
 	Object objeto;
 	DesenharObjeto primeiro;
@@ -240,7 +267,7 @@ public class DesenharReferenciasObjeto {
 	        	} catch (Exception e) {}
 	        	
 	        	desObj.atributos[i] = new DesenharAtributo(f.getName(),""+f_value);
-	        	if(!f.getType().isPrimitive() /*&& f.getType() != String.class*/) {
+	        	if(!f.getType().isPrimitive() && f.getType() != String.class) {
 	        		desObj.atributos[i].ref = analisarObjeto(f_value,classesCount,visitados);
 	        	}
 	        }
