@@ -104,10 +104,17 @@ public class DesenharReferenciasObjeto {
 			
 			Desktop desktop = Desktop.getDesktop();
 			
-			String content = URLEncoder.encode(DOT, Charset.defaultCharset());
-			content = content.replace("+","%20");
+			
         
-			desktop.browse(new URI("https://dreampuf.github.io/GraphvizOnline/#"+content));
+			if(DOT.length() > 255) {
+				desktop.browse(new URI("https://dreampuf.github.io/GraphvizOnline/"));
+				System.out.println("Cole isto na página:");
+				System.out.println(DOT);
+			} else {
+				String content = URLEncoder.encode(DOT, Charset.defaultCharset());
+				content = content.replace("+","%20");
+				desktop.browse(new URI("https://dreampuf.github.io/GraphvizOnline/#"+content));
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
