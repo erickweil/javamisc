@@ -60,6 +60,28 @@ public class ListaEncadeada {
         return ret;
     }
 
+    public String remove(int indice) {
+        if(indice == 0) {
+            return removeFirst();
+        } else {
+            Elemento anterior = getElemento(indice-1);
+            Elemento atual = anterior.prox;
+
+            anterior.prox = atual.prox;
+
+            if(atual == fim) {
+                fim = anterior;
+            }
+
+            tamanho--;
+            return atual.valor;
+        }
+    }
+
+    public String removeLast() {
+        return remove(tamanho-1);
+    }
+
     public String get(int indice) {
         return getElemento(indice).valor;
     }
@@ -72,18 +94,7 @@ public class ListaEncadeada {
         return ret;
     }
 
-    public String remove(int indice) {
-        if(indice == 0) {
-            return removeFirst();
-        } else {
-            Elemento anterior = getElemento(indice-1);
-            Elemento atual = anterior.prox;
 
-            anterior.prox = atual.prox;
-
-            return atual.valor;
-        }
-    }
 
     private Elemento getElemento(int indice) {
         Elemento atual = inicio;
@@ -97,6 +108,44 @@ public class ListaEncadeada {
         }
         System.err.println("Não encontrado");
         return null;
+    }
+
+    public boolean contains(String valor) {
+        Elemento atual = inicio;
+        while(atual != null) {
+            if(atual.valor.equals(valor))  {
+                return true;
+            }
+            atual = atual.prox;
+        }
+        return false;
+    }
+
+    public int indexOf(String valor) {
+        Elemento atual = inicio;
+        int contador = 0;
+        while(atual != null) {
+            if(atual.valor.equals(valor))  {
+                return contador;
+            }
+            contador++;
+            atual = atual.prox;
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(String valor) {
+        Elemento atual = inicio;
+        int contador = 0;
+        int pos = -1;
+        while(atual != null) {
+            if(atual.valor.equals(valor))  {
+                pos = contador;
+            }
+            contador++;
+            atual = atual.prox;
+        }
+        return pos;
     }
 
     public boolean isEmpty() {
@@ -142,15 +191,19 @@ public class ListaEncadeada {
 
         lista.addLast("A");
         lista.addLast("B");
-        lista.addLast("C");
+        lista.addLast("EE");
 
         lista.addLast("D");
-        lista.addLast("E");
+        lista.addLast("EE");
         lista.addLast("F");
 
         lista.printar();
 
-        System.out.println("Get 2:"+lista.get(-1));
+        String v = new String("EE");
+        System.out.println("Procurando '"+v+"':");
+        System.out.println(lista.contains(v));
+        System.out.println(lista.indexOf(v));
+        System.out.println(lista.lastIndexOf(v));
 
     }
 }
