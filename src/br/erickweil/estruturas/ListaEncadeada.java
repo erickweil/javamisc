@@ -1,83 +1,156 @@
 package br.erickweil.estruturas;
 
-/**
- * Classe ListaEncadeada
- * Esta classe permite construir uma lista onde que cada
- * elemento aponta para o próximo, até chegar no fim com um
- * elemento que aponta para 'null'
- */
 public class ListaEncadeada {
-	/**
-	 * Classe que define um elemento na lista
-	 * Contém o valor e uma referência ao próximo
-	 */
-	public static class Elemento {
-		String valor;
-		Elemento prox;
 
-		public Elemento(String valor) {
-			this.valor = valor;
-			this.prox = null;
-		}
+    public static class Elemento {
+        String valor;
+        Elemento prox;
 
-		/** Para escrever na tela os elementos
-		* Ex: A --> B --> C --> null */
-		@Override
-		public String toString() {
-			return this.valor + " --> " + this.prox;
-		}
-	}
-	
-	// ------- Atributos da classe ListaEncadeada -------
-	// indica o início da lista.
-	Elemento inicio;
+        public Elemento(String valor) {
+            this.valor = valor;
+            this.prox = null;
+        }
+    }
 
-	/**
-	 * Este método adiciona um elemento no início da lista
-	 * Ou seja, este novo valor será o primeiro da lista
-	 * @param valor O valor que vai será adicionado
-	*/
-	public void addFirst(String valor) {
-		Elemento novo = new Elemento(valor);
-		novo.prox = inicio;
-		inicio = novo;
-	}
+    private Elemento inicio;
+    private Elemento fim;
+    private int tamanho;
 
-	/**
-	 * Remove um elemento do início da lista
-	 * @return o valor removido
-	 */
-	public String removeFirst() {
-		String valor = inicio.valor;
-		inicio = inicio.prox;
-		return valor;
-	}
-	
-	// Crie aqui outro método na classe ListaEncadeada
+    public ListaEncadeada() {
+        this.inicio = null;
+        this.fim = null;
+        this.tamanho = 0;
+    }
 
-	/**
-	 * Método principal. Para testar o código e ver
-	 * se os métodos funcionam como deveriam.
-	 */
-	public static void main(String[] args) {
-		System.out.println("OK");
-		
-		// Criando uma lista inicialmente vazia.
-		ListaEncadeada lista = new ListaEncadeada();
+    public void addFirst(String valor) {
+        Elemento novo = new Elemento(valor);
+        if(isEmpty()) {
+            // Se estiver vazia, tanto inicio como fim é o novo
+            inicio = novo;
+            fim = novo;
+        } else {
+            // Faça o novo apontar para inicio, e então
+            // o novo se torna o inicio
+            novo.prox = inicio;
+            inicio = novo;
+        }
+        tamanho++;
+    }
 
-		// Testando o método addFirst
-		lista.addFirst("Batata");
-		lista.addFirst("Cenoura");
-		lista.addFirst("Melancia");
-	
-		// Se printar na tela esses três valores é porque adicionou
-		System.out.println("Lista antes de remover: " + lista.inicio);
-		
-		// Testando o método removeFirst
-		String removido = lista.removeFirst();
-		System.out.println("Removido: "+removido);
-		
-		// Se printar na tela a lista sem o que foi removido é porque removeu
-		System.out.println("Lista depois de remover: " + lista.inicio);
-	}
+    public void addLast(String valor) {
+        Elemento novo = new Elemento(valor);
+        if(isEmpty()) {
+            inicio = novo;
+            fim = novo;
+        } else {
+            fim.prox = novo;
+            fim = novo;
+        }
+        tamanho++;
+    }
+
+    public String removeFirst() {
+        String ret = inicio.valor;
+        if(size() == 1) {
+            clear();
+        } else {
+            inicio = inicio.prox;
+            tamanho--;
+        }
+        return ret;
+    }
+
+    public String get(int indice) {
+        return getElemento(indice).valor;
+    }
+
+    public String set(int indice, String valor) {
+        Elemento elem = getElemento(indice);
+        String ret = elem.valor;
+        elem.valor = valor;
+
+        return ret;
+    }
+
+    public String remove(int indice) {
+        if(indice == 0) {
+            return removeFirst();
+        } else {
+            Elemento anterior = getElemento(indice-1);
+            Elemento atual = anterior.prox;
+
+            anterior.prox = atual.prox;
+
+            return atual.valor;
+        }
+    }
+
+    private Elemento getElemento(int indice) {
+        Elemento atual = inicio;
+        int contador = 0;
+        while(atual != null) {
+            if(contador == indice) {
+                return atual;
+            }
+            contador++;
+            atual = atual.prox;
+        }
+        System.err.println("Não encontrado");
+        return null;
+    }
+
+    public boolean isEmpty() {
+        return tamanho == 0;
+    }
+
+    public String getFirst() {
+        return inicio.valor;
+    }
+
+    public String getLast() {
+        return fim.valor;
+    }
+
+    public int size() {
+        return tamanho;
+    }
+
+    public void clear() {
+        inicio = null;
+        fim = null;
+        tamanho = 0;
+    }
+
+    public void printar() {
+        Elemento atual = inicio;
+        System.out.println("tamanho:"+tamanho);
+        while(atual != null) {
+            System.out.print(atual.valor);
+            if(atual == inicio) {
+                System.out.println(" <-- inicio");
+            } else if(atual == fim) {
+                System.out.println(" <-- fim");
+            } else {
+                System.out.println();
+            }
+            atual = atual.prox;
+        }
+    }
+
+    public static void main(String[] args) {
+        ListaEncadeada lista = new ListaEncadeada();
+
+        lista.addLast("A");
+        lista.addLast("B");
+        lista.addLast("C");
+
+        lista.addLast("D");
+        lista.addLast("E");
+        lista.addLast("F");
+
+        lista.printar();
+
+        System.out.println("Get 2:"+lista.get(-1));
+
+    }
 }
