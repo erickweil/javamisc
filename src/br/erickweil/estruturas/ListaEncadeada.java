@@ -2,6 +2,8 @@ package br.erickweil.estruturas;
 
 import java.util.Iterator;
 
+import javax.sound.sampled.LineUnavailableException;
+
 /**
  * Classe ListaEncadeada
  * Esta classe permite construir uma lista onde que cada
@@ -199,6 +201,14 @@ public class ListaEncadeada<T> implements Iterable<T> {
         tamanho = 0;
     }
 
+	public ListaEncadeada<T> clone() {
+		ListaEncadeada<T> ret = new ListaEncadeada<T>();
+		for(T elem : this) {
+			ret.addLast(elem);
+		}
+		return ret;
+	}
+
     public void printar() {
         Elemento<T> atual = inicio;
         System.out.println("tamanho:"+tamanho);
@@ -232,16 +242,18 @@ public class ListaEncadeada<T> implements Iterable<T> {
 		lista.addLast("Uva");
 	
 		// Se printar na tela esses três valores é porque adicionou
-		System.out.println("Lista antes de remover: " + lista.inicio);
+		System.out.println("Lista antes de remover: ");
+		lista.printar();
 		
-		System.out.println(lista.get(2));
+		//System.out.println(lista.get(2));
 		
 		// Testando o método removeFirst
 		String removido = lista.removeFirst();
-		System.out.println("Removido: "+removido);
+		System.out.println("\nRemovido: "+removido);
 		
 		// Se printar na tela a lista sem o que foi removido é porque removeu
-		System.out.println("Lista depois de remover: " + lista.inicio);
+		System.out.println("Lista depois de remover: ");
+		lista.printar();
 	}
 
 }

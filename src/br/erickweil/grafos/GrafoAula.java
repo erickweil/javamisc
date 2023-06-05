@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-public class TesteGrafos {
+public class GrafoAula {
     public static class Grafo {
         List<Vertice> vertices;   
 
