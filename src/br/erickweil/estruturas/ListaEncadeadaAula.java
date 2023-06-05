@@ -1,58 +1,29 @@
 package br.erickweil.estruturas;
 
-import java.util.Iterator;
+public class ListaEncadeadaAula {
 
-/**
- * Classe ListaEncadeada
- * Esta classe permite construir uma lista onde que cada
- * elemento aponta para o próximo, até chegar no fim com um
- * elemento que aponta para 'null'
- */
-public class ListaEncadeada<T> implements Iterable<T> {
-	
-	@Override
-	public Iterator<T> iterator() {
-		final ListaEncadeada<T> that = this;
-		return new Iterator<T>() {
-			Elemento<T> atual = that.inicio;
-			@Override
-			public boolean hasNext() {
-				// TODO Auto-generated method stub
-				return atual != null;
-			}
+    public static class Elemento {
+        String valor;
+        Elemento prox;
 
-			@Override
-			public T next() {
-				// TODO Auto-generated method stub
-				T valor = atual.valor;
-				atual = atual.prox;
-				return valor;
-			}
-		};
-	}
-	
-	public static class Elemento<T> {
-        T valor;
-        Elemento<T> prox;
-
-        public Elemento(T valor) {
+        public Elemento(String valor) {
             this.valor = valor;
             this.prox = null;
         }
     }
 
-    private Elemento<T> inicio;
-    private Elemento<T> fim;
+    private Elemento inicio;
+    private Elemento fim;
     private int tamanho;
 
-    public ListaEncadeada() {
+    public ListaEncadeadaAula() {
         this.inicio = null;
         this.fim = null;
         this.tamanho = 0;
     }
 
-    public void addFirst(T valor) {
-        Elemento<T> novo = new Elemento<>(valor);
+    public void addFirst(String valor) {
+        Elemento novo = new Elemento(valor);
         if(isEmpty()) {
             // Se estiver vazia, tanto inicio como fim é o novo
             inicio = novo;
@@ -66,8 +37,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
         tamanho++;
     }
 
-    public void addLast(T valor) {
-        Elemento<T> novo = new Elemento<>(valor);
+    public void addLast(String valor) {
+        Elemento novo = new Elemento(valor);
         if(isEmpty()) {
             inicio = novo;
             fim = novo;
@@ -78,8 +49,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
         tamanho++;
     }
 
-    public T removeFirst() {
-        T ret = inicio.valor;
+    public String removeFirst() {
+        String ret = inicio.valor;
         if(size() == 1) {
             clear();
         } else {
@@ -89,12 +60,12 @@ public class ListaEncadeada<T> implements Iterable<T> {
         return ret;
     }
 
-    public T remove(int indice) {
+    public String remove(int indice) {
         if(indice == 0) {
             return removeFirst();
         } else {
-            Elemento<T> anterior = getElemento(indice-1);
-            Elemento<T> atual = anterior.prox;
+            Elemento anterior = getElemento(indice-1);
+            Elemento atual = anterior.prox;
 
             anterior.prox = atual.prox;
 
@@ -107,17 +78,17 @@ public class ListaEncadeada<T> implements Iterable<T> {
         }
     }
 
-    public T removeLast() {
+    public String removeLast() {
         return remove(tamanho-1);
     }
 
-    public T get(int indice) {
+    public String get(int indice) {
         return getElemento(indice).valor;
     }
 
-    public T set(int indice, T valor) {
-        Elemento<T> elem = getElemento(indice);
-        T ret = elem.valor;
+    public String set(int indice, String valor) {
+        Elemento elem = getElemento(indice);
+        String ret = elem.valor;
         elem.valor = valor;
 
         return ret;
@@ -125,8 +96,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
 
 
 
-    private Elemento<T> getElemento(int indice) {
-        Elemento<T> atual = inicio;
+    private Elemento getElemento(int indice) {
+        Elemento atual = inicio;
         int contador = 0;
         while(atual != null) {
             if(contador == indice) {
@@ -139,8 +110,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
         return null;
     }
 
-    public boolean contains(T valor) {
-        Elemento<T> atual = inicio;
+    public boolean contains(String valor) {
+        Elemento atual = inicio;
         while(atual != null) {
             if(atual.valor.equals(valor))  {
                 return true;
@@ -150,8 +121,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
         return false;
     }
 
-    public int indexOf(T valor) {
-        Elemento<T> atual = inicio;
+    public int indexOf(String valor) {
+        Elemento atual = inicio;
         int contador = 0;
         while(atual != null) {
             if(atual.valor.equals(valor))  {
@@ -163,8 +134,8 @@ public class ListaEncadeada<T> implements Iterable<T> {
         return -1;
     }
 
-    public int lastIndexOf(T valor) {
-        Elemento<T> atual = inicio;
+    public int lastIndexOf(String valor) {
+        Elemento atual = inicio;
         int contador = 0;
         int pos = -1;
         while(atual != null) {
@@ -181,11 +152,11 @@ public class ListaEncadeada<T> implements Iterable<T> {
         return tamanho == 0;
     }
 
-    public T getFirst() {
+    public String getFirst() {
         return inicio.valor;
     }
 
-    public T getLast() {
+    public String getLast() {
         return fim.valor;
     }
 
@@ -200,7 +171,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
     }
 
     public void printar() {
-        Elemento<T> atual = inicio;
+        Elemento atual = inicio;
         System.out.println("tamanho:"+tamanho);
         while(atual != null) {
             System.out.print(atual.valor);
@@ -215,33 +186,24 @@ public class ListaEncadeada<T> implements Iterable<T> {
         }
     }
 
-	/**
-	 * Método principal. Para testar o código e ver
-	 * se os métodos funcionam como deveriam.
-	 */
-	public static void main(String[] args) {
-		System.out.println("OK");
-		
-		// Criando uma lista inicialmente vazia.
-		ListaEncadeada<String> lista = new ListaEncadeada<>();
+    public static void main(String[] args) {
+        ListaEncadeadaAula lista = new ListaEncadeadaAula();
 
-		// Testando o método addFirst
-		lista.addLast("Batata");
-		lista.addFirst("Cenoura");
-		lista.addFirst("Melancia");
-		lista.addLast("Uva");
-	
-		// Se printar na tela esses três valores é porque adicionou
-		System.out.println("Lista antes de remover: " + lista.inicio);
-		
-		System.out.println(lista.get(2));
-		
-		// Testando o método removeFirst
-		String removido = lista.removeFirst();
-		System.out.println("Removido: "+removido);
-		
-		// Se printar na tela a lista sem o que foi removido é porque removeu
-		System.out.println("Lista depois de remover: " + lista.inicio);
-	}
+        lista.addLast("A");
+        lista.addLast("B");
+        lista.addLast("EE");
 
+        lista.addLast("D");
+        lista.addLast("EE");
+        lista.addLast("F");
+
+        lista.printar();
+
+        String v = new String("EE");
+        System.out.println("Procurando '"+v+"':");
+        System.out.println(lista.contains(v));
+        System.out.println(lista.indexOf(v));
+        System.out.println(lista.lastIndexOf(v));
+
+    }
 }

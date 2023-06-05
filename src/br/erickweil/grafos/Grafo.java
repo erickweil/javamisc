@@ -7,9 +7,9 @@ public class Grafo<T> {
 	public static final int EXPLORADO = 1;
 	
 	public static class Vertice<T> {
-		int estado;
-		T valor;
-		ListaEncadeada<Vertice<T>> conexoes;
+		public int estado;
+		public T valor;
+		public ListaEncadeada<Vertice<T>> conexoes;
 		
 		public Vertice(T valor) {
 			this.estado = INICIAL;
@@ -24,7 +24,7 @@ public class Grafo<T> {
 		}
 	}
 	
-	ListaEncadeada<Vertice<T>> vertices;
+	public ListaEncadeada<Vertice<T>> vertices;
 	
 	public Grafo() {
 		this.vertices = new ListaEncadeada<Grafo.Vertice<T>>();
@@ -32,17 +32,17 @@ public class Grafo<T> {
 	
 	public Vertice<T> criarVertice(T valor) {
 		Vertice<T> v = new Vertice<T>(valor);
-		vertices.addFirst(v);
+		vertices.addLast(v);
 		return v;
 	}
 	
 	public void conectar(Vertice<T> a,Vertice<T> b) {
-		a.conexoes.addFirst(b);
-		b.conexoes.addFirst(a);
+		a.conexoes.addLast(b);
+		b.conexoes.addLast(a);
 	}
 	
 	public void conectarDirecionado(Vertice<T> a,Vertice<T> b) {
-		a.conexoes.addFirst(b);
+		a.conexoes.addLast(b);
 	}
 	
 	public void printar() {
