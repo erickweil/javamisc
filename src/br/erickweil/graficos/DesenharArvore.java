@@ -15,7 +15,7 @@ import br.erickweil.utilidades.WeilArrays;
 public class DesenharArvore implements WeilGraficos.Callback{
 
 	public static void main(String[] args) {		
-		WeilGraficos.iniciarGraficos(new DesenharArvore(null));
+		WeilGraficos.iniciarGraficos(new DesenharArvore(null),false);
 	}
 	
 	public static Arvore gerarNovaArvore() {

@@ -62,6 +62,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	public static void main(String[] args) {
 		Grafo<PhysicalVertice<String>> grafo = new Grafo<>();
 
+		Random rdn = new Random();
+
 		int qual = 0;
 		if(qual == 0) {
 		var _0 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.35f, 0.3f),"0"));
@@ -71,33 +73,24 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		var _4 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.67f),"4"));
 		var _5 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.76f, 0.6f),"5"));
 		var _6 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.55f, 0.9f),"6"));
-		var _7 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.75f, 0.9f),"7"));
+		var _7 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.48f, 0.10f),"7"));
 		var _8 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.15f, 0.5f),"8"));
 		var _9 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.33f, 0.1f),"9"));
 
-		grafo.conectar(_0, _8);
 		grafo.conectar(_0, _2);
-
+		grafo.conectar(_0, _9);
+		grafo.conectar(_0, _8);
+		grafo.conectar(_1, _0);
 		grafo.conectar(_1, _3);
 		grafo.conectar(_1, _4);
-		grafo.conectar(_1, _5);
-
 		grafo.conectar(_2, _4);
-
+		grafo.conectar(_2, _6);
+		grafo.conectar(_2, _8);
 		grafo.conectar(_3, _5);
-
-		grafo.conectar(_4, _5);
+		grafo.conectar(_3, _7);
 		grafo.conectar(_4, _6);
-
-		grafo.conectar(_5, _6);
-
-		grafo.conectar(_7, _5);
-		grafo.conectar(_7, _6);
-
-		grafo.conectar(_8, _2);
 		grafo.conectar(_8, _9);
-
-		grafo.conectar(_9, _0);
+		grafo.conectar(_7, _9);
 		
 		} else if(qual == 1) {
 			int w = 6;
@@ -109,7 +102,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 					int index = y*w+x;
 					var v = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(px, py),""+index));
 				
-					if(y > 0) {
+					if(y > 0 && rdn.nextBoolean()) {
 						var prev = grafo.vertices.get((y-1)*w+x);
 						grafo.conectar(prev, v);
 					}
@@ -119,9 +112,39 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 					}
 				}
 			}
+		} else if(qual == 2) {
+			var _A = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.8f),"A"));
+			var _B = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.5f),"B"));
+			var _C = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.15f),"C"));
+			var _D = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.7f, 0.8f),"D"));
+			var _E = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.8f, 0.15f),"E"));
+			var _S = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.15f, 0.8f),"S"));
+			var _G = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.8f, 0.5f),"G"));
+		
+			grafo.conectarDirecionado(_A, _S);
+			grafo.conectarDirecionado(_A, _D);
+			grafo.conectarDirecionado(_A, _B);
+
+			grafo.conectarDirecionado(_B, _S);
+			grafo.conectarDirecionado(_B, _C);
+			grafo.conectarDirecionado(_B, _A);
+
+			grafo.conectarDirecionado(_C, _E);
+			grafo.conectarDirecionado(_C, _B);
+
+			grafo.conectarDirecionado(_D, _G);
+			grafo.conectarDirecionado(_D, _A);
+
+			grafo.conectarDirecionado(_E, _C);
+			grafo.conectarDirecionado(_G, _D);
+
+			
+			grafo.conectarDirecionado(_S, _B);
+			grafo.conectarDirecionado(_S, _A);
 		}
 
-		WeilGraficos.iniciarGraficos(new DesenharGrafo<>(grafo));
+
+		WeilGraficos.iniciarGraficos(new DesenharGrafo<>(grafo),true);
 	}
 	
 	
@@ -135,8 +158,19 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 
 	int canvasWidth = 0;
 	int canvasHeight = 0;
+	int canvasFrameCount = 0;
 	@Override
 	public void onDraw(Graphics2D g, int w, int h) {
+		canvasFrameCount++;
+		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
+			if(objetivo != null && filaVisita != null) {
+				// TODO Auto-generated method stub
+				if(simulateVisitStep()) {
+					achou = true;
+				}
+				
+			}
+		}
 
 		var caminho = filaVisita == null ? null : filaVisita.getFirst();
 
@@ -195,7 +229,9 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	ListaEncadeada<ListaEncadeada<Vertice<PhysicalVertice<T>>>> filaVisita;
 	Vertice<PhysicalVertice<T>> objetivo;
 	boolean achou;
-	private boolean simulateVisitStep(boolean depthFirst) {
+	boolean depthFirst;
+	int velocidadeSimulacao = 6;
+	private boolean simulateVisitStep() {
 		// A ideia é guardar no INÍCIO da fila o caminho de cada vertice expandido
 
 		// Remove o primeiro caminho da fila.
@@ -236,7 +272,10 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 
 		if(objetivo != null && filaVisita != null) {
 			// TODO Auto-generated method stub
-			if(simulateVisitStep(button == 1)) {
+
+			if(velocidadeSimulacao > 0) return;
+
+			if(simulateVisitStep()) {
 				achou = true;
 			}
 			return;
@@ -268,6 +307,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 
 		if(objetivo == null) {
 			objetivo = minVert;
+			depthFirst = button == 1;
 			return;
 		}
 		

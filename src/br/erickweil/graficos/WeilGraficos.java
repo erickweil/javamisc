@@ -28,12 +28,14 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 
 	private Callback callback;
 	
-	private WeilGraficos(Callback callback) {
+	private WeilGraficos(Callback callback,boolean keepRedrawing) {
 		setDoubleBuffered(true);
 		setFocusable(true);
 		setBackground(Color.BLACK);
 		this.callback = callback;
-		//new Thread(this).start();
+
+		if(keepRedrawing)
+		new Thread(this).start();
 	}
 	
 	@Override
@@ -65,9 +67,9 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 		}
 	}
 	
-	public static JFrame iniciarGraficos(Callback callback) {
+	public static JFrame iniciarGraficos(Callback callback,boolean keepRedrawing) {
 		
-		WeilGraficos wg = new WeilGraficos(callback);
+		WeilGraficos wg = new WeilGraficos(callback,keepRedrawing);
 		JFrame frame = new JFrame();
 		frame.setTitle("Java 2D");
 		frame.add(wg);
@@ -101,7 +103,7 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 	}
 	
 	public static void main(String[] args) {
-		iniciarGraficos(null);
+		iniciarGraficos(null,false);
 	}
 
 	@Override
