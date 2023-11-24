@@ -70,6 +70,8 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 	public static JFrame iniciarGraficos(Callback callback,boolean keepRedrawing) {
 		
 		WeilGraficos wg = new WeilGraficos(callback,keepRedrawing);
+		wg.addMouseListener(wg);
+
 		JFrame frame = new JFrame();
 		frame.setTitle("Java 2D");
 		frame.add(wg);
@@ -77,7 +79,7 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 		frame.setSize(800,600);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		frame.addMouseListener(wg);
+		//frame.addMouseListener(wg);
 		return frame;
 	}
 	
@@ -108,17 +110,17 @@ public class WeilGraficos extends JPanel implements Runnable, MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		 Point p = e.getPoint();
-		if(callback != null) callback.onClick(p.x, p.y, e.getButton());
-		
-		this.repaint();
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+				// TODO Auto-generated method stub
+		 Point p = e.getPoint();
+		if(callback != null) callback.onClick(p.x, p.y, e.getButton());
 		
+		this.repaint();
 	}
 
 	@Override

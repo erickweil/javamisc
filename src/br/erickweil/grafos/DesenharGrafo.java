@@ -14,6 +14,10 @@ import br.erickweil.utilidades.Vector2;
 
 public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	
+
+	int velocidadeSimulacao = -1;
+	static int qual = 2;
+
 	public static class PhysicalVertice<T> {
 		static Random rdn = new Random();
 		public T value;
@@ -64,7 +68,6 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 
 		Random rdn = new Random();
 
-		int qual = 0;
 		if(qual == 0) {
 		var _0 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.35f, 0.3f),"0"));
 		var _1 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.45f, 0.4f),"1"));
@@ -102,7 +105,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 					int index = y*w+x;
 					var v = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(px, py),""+index));
 				
-					if(y > 0 && rdn.nextBoolean()) {
+					if(y > 0) {
 						var prev = grafo.vertices.get((y-1)*w+x);
 						grafo.conectar(prev, v);
 					}
@@ -230,7 +233,6 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	Vertice<PhysicalVertice<T>> objetivo;
 	boolean achou;
 	boolean depthFirst;
-	int velocidadeSimulacao = 6;
 	private boolean simulateVisitStep() {
 		// A ideia é guardar no INÍCIO da fila o caminho de cada vertice expandido
 
