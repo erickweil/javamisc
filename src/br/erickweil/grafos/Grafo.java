@@ -1,58 +1,31 @@
 package br.erickweil.grafos;
 
-import br.erickweil.estruturas.ListaEncadeada;
+public abstract class Grafo<T> implements Iterable<Grafo.GrafoVertice<T>> {
 
-public class Grafo<T> {
+	public static abstract class GrafoVertice<K> implements Iterable<GrafoVertice<K>> {
+		public abstract K getValor();
+		public abstract int getEstado();
+		public abstract void setEstado(int estado);
+
+		public abstract void addConexao(GrafoVertice<K> v);
+	}
+
 	public static final int INICIAL = 0;
 	public static final int EXPLORADO = 1;
-	
-	public static class Vertice<T> {
-		public int estado;
-		public T valor;
-		public ListaEncadeada<Vertice<T>> conexoes;
-		
-		public Vertice(T valor) {
-			this.estado = INICIAL;
-			this.valor = valor;
-			this.conexoes = new ListaEncadeada<>();
-		}
-		
-		@Override
-		public String toString() {
-			// TODO Auto-generated method stub
-			return ""+valor;
-		}
-	}
-	
-	public ListaEncadeada<Vertice<T>> vertices;
-	
-	public Grafo() {
-		this.vertices = new ListaEncadeada<Grafo.Vertice<T>>();
-	}
-	
-	public Vertice<T> criarVertice(T valor) {
-		Vertice<T> v = new Vertice<T>(valor);
-		vertices.addLast(v);
-		return v;
-	}
-	
-	public void conectar(Vertice<T> a,Vertice<T> b) {
-		a.conexoes.addLast(b);
-		b.conexoes.addLast(a);
-	}
-	
-	public void conectarDirecionado(Vertice<T> a,Vertice<T> b) {
-		a.conexoes.addLast(b);
-	}
+
+	abstract public int criarVertice(T valor);
+	abstract public void conectar(int a,int b);
+	abstract public void conectarDirecionado(int a,int b);
+	abstract public GrafoVertice<T> getVertice(int a);
 	
 	public void printar() {
 		int nVertices = 0;
 		int nConexoes = 0;
-		for(Vertice<T> vert : this.vertices) {
+		for(GrafoVertice<T> vert : this) {
 			nVertices++;
 			System.out.print(vert);
 			System.out.print(": ");
-			for(Vertice<T> conn : vert.conexoes) {
+			for(GrafoVertice<T> conn : vert) {
 				nConexoes++;
 				System.out.print(conn);
 				System.out.print(", ");
@@ -62,24 +35,22 @@ public class Grafo<T> {
 		System.out.println("Vertices:"+nVertices+" Conexoes:"+nConexoes);
 	}
 	
-	public void depthFirstSearch(Vertice<T> inicio, Vertice<T> objetivo) {		
-		for(Vertice<T> v : this.vertices) {
-			v.estado = INICIAL;
+	public void depthFirstSearch(int inicio, int objetivo) {		
+		for(GrafoVertice<T> v : this) {
+			v.setEstado(INICIAL);
 		}
 		
-		depthFirstVisit(inicio, objetivo);
+		depthFirstVisit(getVertice(inicio), getVertice(objetivo));
 	}
 	
-	private boolean depthFirstVisit(Vertice<T> v, Vertice<T> objetivo) {
-		v.estado = EXPLORADO;
-		System.out.println(v);
+	private boolean depthFirstVisit(GrafoVertice<T> vert, GrafoVertice<T> objetivo) {
+		vert.setEstado(EXPLORADO);
+		//System.out.println(vert);
 		
-		if(v == objetivo) return true;
-		
-		if(v.conexoes.isEmpty()) return false;
-		
-		for(Vertice<T> conn : v.conexoes) {
-			if(conn.estado == INICIAL)
+		if(vert == objetivo) return true;
+
+		for(GrafoVertice<T> conn : vert) {
+			if(conn.getEstado() == INICIAL)
 			{
 				if(depthFirstVisit(conn, objetivo)) return true;
 			}
@@ -88,13 +59,13 @@ public class Grafo<T> {
 	}
 	
 	public static void main(String[] args) {
-		Grafo<String> graph = new Grafo<>();
-		Vertice<String> v0 = graph.criarVertice("v0");
-		Vertice<String> v1 = graph.criarVertice("v1");
-		Vertice<String> v2 = graph.criarVertice("v2");
-		Vertice<String> v3 = graph.criarVertice("v3");
-		Vertice<String> v4 = graph.criarVertice("v4");
-		Vertice<String> v5 = graph.criarVertice("v5");
+		Grafo<String> graph = new GrafoEncadeado<>();
+		int v0 = graph.criarVertice("v0");
+		int v1 = graph.criarVertice("v1");
+		int v2 = graph.criarVertice("v2");
+		int v3 = graph.criarVertice("v3");
+		int v4 = graph.criarVertice("v4");
+		int v5 = graph.criarVertice("v5");
 		
 		graph.conectar(v0, v1);
 		graph.conectar(v0, v2);

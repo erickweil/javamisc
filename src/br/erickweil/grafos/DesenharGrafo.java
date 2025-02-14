@@ -5,16 +5,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Iterator;
 import java.util.Random;
 
 import br.erickweil.estruturas.ListaEncadeada;
 import br.erickweil.graficos.WeilGraficos;
-import br.erickweil.grafos.Grafo.Vertice;
+import br.erickweil.grafos.Grafo.GrafoVertice;
 import br.erickweil.utilidades.Vector2;
 
 public class DesenharGrafo<T> implements  WeilGraficos.Callback{
-	
-
 	int velocidadeSimulacao = 1;
 	static int qual = 1;
 
@@ -35,40 +34,37 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		
 		@Override
 		public String toString() {
-			// TODO Auto-generated method stub
 			return ""+value;
 		}
 	}
 	
 	public Grafo<PhysicalVertice<T>> getPhysicalGraph(Grafo<T> graph) {
-		var ret = new Grafo<DesenharGrafo.PhysicalVertice<T>>();
+		var ret = new GrafoEncadeado<DesenharGrafo.PhysicalVertice<T>>();
 		
 		int i =0;
-		for(Vertice<T> v : graph.vertices) {
-			var pv = ret.criarVertice(new PhysicalVertice<T>(v.valor));
-			pv.estado = i;
-			v.estado = i;
+		for(GrafoVertice<T> v : graph) {
+			var pv = ret.criarVertice(new PhysicalVertice<T>(v.getValor()));
+			ret.getVertice(pv).setEstado(i);
+			graph.getVertice(i).setEstado(i);
 			i++;
 		}
 		
-		for(Vertice<T> v : graph.vertices) {
-			for(Vertice<T> conn : v.conexoes) {
-				var pv = ret.vertices.get(v.estado);
-				var pconn = ret.vertices.get(conn.estado);
-				ret.conectarDirecionado(pv, pconn);
+		for(GrafoVertice<T> v : graph) {
+			for(GrafoVertice<T> conn : v) {
+				ret.conectarDirecionado(v.getEstado(), conn.getEstado());
 			}
-		}
-		
+		}		
 		
 		return ret;
 	}
 	
 	public static void main(String[] args) {
-		Grafo<PhysicalVertice<String>> grafo = new Grafo<>();
+		Grafo<PhysicalVertice<String>> grafo = null;
 
 		Random rdn = new Random();
 
 		if(qual == 0) {
+		grafo = new GrafoEncadeado<>();
 		var _0 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.35f, 0.3f),"0"));
 		var _1 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.45f, 0.4f),"1"));
 		var _2 = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.2f, 0.75f),"2"));
@@ -96,6 +92,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		grafo.conectar(_7, _9);
 		
 		} else if(qual == 1) {
+			grafo = new GrafoEncadeado<>();
 			int w = 8;
 			int h = 8;
 			for(int y = 0; y < h; y++) {
@@ -107,26 +104,24 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 				
 					if(new Random().nextDouble() > 0.5) {
 						if(y > 0) {
-							var prev = grafo.vertices.get((y-1)*w+x);
-							grafo.conectar(prev, v);
+							grafo.conectar((y-1)*w+x, v);
 						}
 					}
 					if(new Random().nextDouble() > 0.5) {
 						if(x > 0) {
-							var prev = grafo.vertices.get(y*w+(x-1));
-							grafo.conectar(prev, v);
+							grafo.conectar(y*w+(x-1), v);
 						}
 					}
 					if(new Random().nextDouble() > 0.5) {
 						if(y > 0 && x > 0) {
-							var prev = grafo.vertices.get((y-1)*w+(x-1));
-							grafo.conectar(prev, v);
+							grafo.conectar((y-1)*w+(x-1), v);
 						}
 					}
 					
 				}
 			}
 		} else if(qual == 2) {
+			grafo = new GrafoEncadeado<>();
 			var _A = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.8f),"A"));
 			var _B = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.5f),"B"));
 			var _C = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(0.5f, 0.15f),"C"));
@@ -157,13 +152,13 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 			grafo.conectarDirecionado(_S, _A);
 		}
 
-
-		WeilGraficos.iniciarGraficos(new DesenharGrafo<>(grafo),true);
+		if(grafo != null) {
+			WeilGraficos.iniciarGraficos(new DesenharGrafo<>(grafo),true);
+		}
 	}
 	
 	
 	Grafo<PhysicalVertice<T>> physGraph;
-
 
 	public DesenharGrafo(Grafo<PhysicalVertice<T>> physGraph) {
 		this.physGraph = physGraph;
@@ -192,17 +187,17 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		canvasHeight = h;
 		// TODO Auto-generated method stub
 		int size = 28;
-		for(var v : physGraph.vertices) {			
-			Vector2 pos = v.valor.pos;
+		for(var v : physGraph) {			
+			Vector2 pos = v.getValor().pos;
 			int v_caminho = caminho == null ? 0 : caminho.indexOf(v);
 			int x = (int)(pos.x * w);
 			int y = (int)(pos.y * h);
 			
 			g.setStroke(new BasicStroke(3.0f));			
-			for(var conn : v.conexoes) {
+			for(var conn : v) {
 				int conn_caminho = caminho == null ? 0 : caminho.indexOf(conn);
-				int connx = (int)(conn.valor.pos.x * w);
-				int conny = (int)(conn.valor.pos.y * h);
+				int connx = (int)(conn.getValor().pos.x * w);
+				int conny = (int)(conn.getValor().pos.y * h);
 
 				if(v_caminho != -1 && conn_caminho != -1 && (v_caminho == conn_caminho-1 || v_caminho == conn_caminho+1))
 					g.setColor(achou ? Color.GREEN : Color.RED);
@@ -213,8 +208,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 			}			
 		}
 
-		for(var v : physGraph.vertices) {			
-			Vector2 pos = v.valor.pos;
+		for(var v : physGraph) {			
+			Vector2 pos = v.getValor().pos;
 			int x = (int)(pos.x * w);
 			int y = (int)(pos.y * h);
 			
@@ -227,7 +222,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 				g.setColor(Color.GREEN);
 			else if(caminho != null && caminho.getFirst() == v)
 				g.setColor(Color.RED);
-			else if(v.estado == Grafo.EXPLORADO)
+			else if(v.getEstado() == Grafo.EXPLORADO)
 				g.setColor(Color.RED);
 			else
 				g.setColor(Color.WHITE);
@@ -235,13 +230,13 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 			
 			//g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial",Font.PLAIN,size));
-			WeilGraficos.drawCenteredString(g, ""+v.valor, new Rectangle(x-size, y-size, size*2, size*2));
+			WeilGraficos.drawCenteredString(g, ""+v.getValor(), new Rectangle(x-size, y-size, size*2, size*2));
 			
 		}
 	}
 	
-	ListaEncadeada<ListaEncadeada<Vertice<PhysicalVertice<T>>>> filaVisita;
-	Vertice<PhysicalVertice<T>> objetivo;
+	ListaEncadeada<ListaEncadeada<GrafoVertice<PhysicalVertice<T>>>> filaVisita;
+	GrafoVertice<PhysicalVertice<T>> objetivo;
 	boolean achou;
 	boolean depthFirst;
 	private boolean simulateVisitStep() {
@@ -257,10 +252,10 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		// Caminho encontrado
 		if(ultimo == objetivo) {
 			filaVisita.addFirst(caminho);
-			ultimo.estado = Grafo.EXPLORADO;
+			ultimo.setEstado(Grafo.EXPLORADO);
 			return true;
-		} else if(ultimo.estado != Grafo.EXPLORADO) {
-			for(var conn : ultimo.conexoes) {
+		} else if(ultimo.getEstado() != Grafo.EXPLORADO) {
+			for(var conn : ultimo) {
 				var novo_caminho = caminho.clone();
 				novo_caminho.addLast(conn);
 
@@ -270,7 +265,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 				filaVisita.addLast(novo_caminho);
 			}
 
-			ultimo.estado = Grafo.EXPLORADO;
+			ultimo.setEstado(Grafo.EXPLORADO);
 		}
 
 		return false;
@@ -297,9 +292,9 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		}
 
 		int minDist = -1;
-		Vertice<PhysicalVertice<T>> minVert = null;
-		for(var v : physGraph.vertices) {			
-			Vector2 pos = v.valor.pos;
+		GrafoVertice<PhysicalVertice<T>> minVert = null;
+		for(var v : physGraph) {			
+			Vector2 pos = v.getValor().pos;
 			int vx = (int)(pos.x * canvasWidth);
 			int vy = (int)(pos.y * canvasHeight);
 
@@ -309,11 +304,11 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 				minVert = v;
 			}
 
-			v.estado = Grafo.INICIAL;
+			v.setEstado(Grafo.INICIAL);
 		}
 
 		if(filaVisita == null) {
-			var t = new ListaEncadeada<Vertice<PhysicalVertice<T>>>();
+			var t = new ListaEncadeada<GrafoVertice<PhysicalVertice<T>>>();
 			t.addFirst(minVert);
 			filaVisita = new ListaEncadeada<>();
 			filaVisita.addFirst(t);
@@ -327,5 +322,4 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		}
 		
 	}
-
 }

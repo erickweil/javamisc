@@ -11,8 +11,6 @@ import java.util.Set;
 
 import br.erickweil.estruturas.ListaEncadeada;
 import br.erickweil.graficos.WeilGraficos;
-import br.erickweil.grafos.DesenharGrafo.PhysicalVertice;
-import br.erickweil.grafos.Grafo.Vertice;
 
 public class Caminho implements WeilGraficos.Callback {
 	
