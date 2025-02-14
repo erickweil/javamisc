@@ -15,8 +15,8 @@ import br.erickweil.utilidades.Vector2;
 public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	
 
-	int velocidadeSimulacao = -1;
-	static int qual = 2;
+	int velocidadeSimulacao = 1;
+	static int qual = 1;
 
 	public static class PhysicalVertice<T> {
 		static Random rdn = new Random();
@@ -96,8 +96,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		grafo.conectar(_7, _9);
 		
 		} else if(qual == 1) {
-			int w = 6;
-			int h = 6;
+			int w = 8;
+			int h = 8;
 			for(int y = 0; y < h; y++) {
 				for(int x = 0; x < w; x++) {
 					float px = (x/(1.0f*w) * 0.9f) + 0.1f;
@@ -105,14 +105,25 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 					int index = y*w+x;
 					var v = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(px, py),""+index));
 				
-					if(y > 0) {
-						var prev = grafo.vertices.get((y-1)*w+x);
-						grafo.conectar(prev, v);
+					if(new Random().nextDouble() > 0.5) {
+						if(y > 0) {
+							var prev = grafo.vertices.get((y-1)*w+x);
+							grafo.conectar(prev, v);
+						}
 					}
-					if(x > 0) {
-						var prev = grafo.vertices.get(y*w+(x-1));
-						grafo.conectar(prev, v);
+					if(new Random().nextDouble() > 0.5) {
+						if(x > 0) {
+							var prev = grafo.vertices.get(y*w+(x-1));
+							grafo.conectar(prev, v);
+						}
 					}
+					if(new Random().nextDouble() > 0.5) {
+						if(y > 0 && x > 0) {
+							var prev = grafo.vertices.get((y-1)*w+(x-1));
+							grafo.conectar(prev, v);
+						}
+					}
+					
 				}
 			}
 		} else if(qual == 2) {
@@ -175,7 +186,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 			}
 		}
 
-		var caminho = filaVisita == null ? null : filaVisita.getFirst();
+		var caminho = filaVisita == null || filaVisita.isEmpty() ? null : filaVisita.getFirst();
 
 		canvasWidth = w;
 		canvasHeight = h;
@@ -222,7 +233,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 				g.setColor(Color.WHITE);
 			g.drawOval( x-size, y-size, size*2, size*2);
 			
-			g.setColor(Color.WHITE);
+			//g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial",Font.PLAIN,size));
 			WeilGraficos.drawCenteredString(g, ""+v.valor, new Rectangle(x-size, y-size, size*2, size*2));
 			
@@ -235,6 +246,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	boolean depthFirst;
 	private boolean simulateVisitStep() {
 		// A ideia é guardar no INÍCIO da fila o caminho de cada vertice expandido
+
+		if(filaVisita.isEmpty()) return true;
 
 		// Remove o primeiro caminho da fila.
 		var caminho = filaVisita.removeFirst();
