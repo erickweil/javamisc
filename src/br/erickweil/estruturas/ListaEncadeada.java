@@ -1,8 +1,8 @@
 package br.erickweil.estruturas;
 
 import java.util.Iterator;
-
-import javax.sound.sampled.LineUnavailableException;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * Classe ListaEncadeada
@@ -25,7 +25,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
 
 			@Override
 			public T next() {
-				// TODO Auto-generated method stub
+				if(!hasNext()) throw new NoSuchElementException();
 				T valor = atual.valor;
 				atual = atual.prox;
 				return valor;
@@ -81,6 +81,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
     }
 
     public T removeFirst() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         T ret = inicio.valor;
         if(size() == 1) {
             clear();
@@ -92,6 +93,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
     }
 
     public T remove(int indice) {
+        verificarIndice(indice);
         if(indice == 0) {
             return removeFirst();
         } else {
@@ -127,24 +129,26 @@ public class ListaEncadeada<T> implements Iterable<T> {
 
 
 
+    // Lança uma exceção se o índice não existe na lista, assim como o ArrayList e LinkedList do Java
+    private void verificarIndice(int indice) {
+        if(indice < 0 || indice >= tamanho) {
+            throw new IndexOutOfBoundsException("Índice: "+indice+", Tamanho: "+tamanho);
+        }
+    }
+
     private Elemento<T> getElemento(int indice) {
+        verificarIndice(indice);
         Elemento<T> atual = inicio;
-        int contador = 0;
-        while(atual != null) {
-            if(contador == indice) {
-                return atual;
-            }
-            contador++;
+        for(int contador = 0; contador < indice; contador++) {
             atual = atual.prox;
         }
-        System.err.println("Não encontrado");
-        return null;
+        return atual;
     }
 
     public boolean contains(T valor) {
         Elemento<T> atual = inicio;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 return true;
             }
             atual = atual.prox;
@@ -156,7 +160,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
         Elemento<T> atual = inicio;
         int contador = 0;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 return contador;
             }
             contador++;
@@ -170,7 +174,7 @@ public class ListaEncadeada<T> implements Iterable<T> {
         int contador = 0;
         int pos = -1;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 pos = contador;
             }
             contador++;
@@ -184,10 +188,12 @@ public class ListaEncadeada<T> implements Iterable<T> {
     }
 
     public T getFirst() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         return inicio.valor;
     }
 
     public T getLast() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         return fim.valor;
     }
 

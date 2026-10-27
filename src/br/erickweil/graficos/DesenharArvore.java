@@ -19,7 +19,7 @@ public class DesenharArvore implements WeilGraficos.Callback{
 	}
 	
 	public static Arvore gerarNovaArvore() {
-		int n = new Random().nextInt(50);
+		int n = new Random().nextInt(1, 50); // Pelo menos 1 elemento, para existir a raiz
 		//int n = 80 + new Random().nextInt(5);
 		int arr[] = new int[n];
 		WeilArrays.iniciarAleatorioUnico(arr, 100);

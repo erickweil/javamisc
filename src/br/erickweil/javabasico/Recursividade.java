@@ -11,11 +11,11 @@ public class Recursividade {
 
 	// 5 = 5 * 4 * 3 * 2 * 1
 	// F(n) = n * F(n-1)
-	// F(1) = 1
+	// F(1) = 1 e F(0) = 1
 	public static double fatorial(int n) {
 		double ret;
-		
-		if(n == 1) ret = 1.0;
+
+		if(n <= 1) ret = 1.0;
 		else ret = n * fatorial(n-1);
 		
 		System.out.println("fatorial("+n+") ret:"+ret);

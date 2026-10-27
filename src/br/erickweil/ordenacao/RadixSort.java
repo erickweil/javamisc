@@ -80,10 +80,18 @@ public class RadixSort implements Ordenador {
     }
 
     private static void radixsort(int arr[], int n) {
+        if (n == 0) return;
+        for (int i = 0; i < n; i++)
+            if (arr[i] < 0)
+                throw new IllegalArgumentException("Esta implementação do RadixSort só ordena números não-negativos");
+
         int max = getMax(arr, n);
 
-        for (int exp = 1; max / exp > 0; exp *= 10)
+        for (int exp = 1; max / exp > 0; exp *= 10) {
             countSort(arr, n, exp);
+            // Evita que exp * 10 passe do limite do int (overflow) quando max tem 10 dígitos
+            if (exp > Integer.MAX_VALUE / 10) break;
+        }
     }
 
     private static void printing(int[] arr){

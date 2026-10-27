@@ -21,7 +21,7 @@ public class BubbleSort implements Ordenador {
 	{
         int ntrocas;
         // O Do-While irá parar quando não houver mais trocas em uma iteração, indicando que está em ordem
-        for(int k = numeros.length-1;k > 1; k--) {
+        for(int k = numeros.length-1;k > 0; k--) {
             ntrocas = 0;
             // atravessa cada par de numeros
             // length-1 para o prox que é i+1 não passar do último índice

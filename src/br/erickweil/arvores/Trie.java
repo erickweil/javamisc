@@ -1,12 +1,7 @@
 package br.erickweil.arvores;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
-import br.erickweil.graficos.DesenharReferenciasObjeto;
 import br.erickweil.utilidades.LerArquivo;
 /*
  A ideia é guardar palavras de forma que cada letra ocupa um nó, 
@@ -44,29 +39,40 @@ public class Trie {
 		this.fim = false;
 	}
 	
-	public static void insere(Trie raiz, String chave) {
-		byte[] chaveArr = chave.getBytes(StandardCharsets.UTF_8);
-		int chaveLen = chaveArr.length;
-		
+	/**
+	 * Posição do caractere no ALFABETO, ou -1 se ele não faz parte do alfabeto.
+	 * Letras maiúsculas são tratadas como minúsculas.
+	 */
+	private static int indice(char c) {
+		return ALFABETO.indexOf(Character.toLowerCase(c));
+	}
+
+	/**
+	 * Insere a palavra na Trie. Palavras com caracteres fora do ALFABETO são ignoradas.
+	 * @return verdadeiro se a palavra foi inserida
+	 */
+	public static boolean insere(Trie raiz, String chave) {
+		for(int nivel = 0; nivel < chave.length(); nivel++) {
+			if(indice(chave.charAt(nivel)) == -1) return false;
+		}
+
 		Trie p = raiz;
-		for(int nivel = 0; nivel < chaveLen; nivel++) {
-			int i = (chaveArr[nivel] & 0xFF) % N_ALFABETO;
+		for(int nivel = 0; nivel < chave.length(); nivel++) {
+			int i = indice(chave.charAt(nivel));
 			if(p.filhos[i] == null) {
 				p.filhos[i] = new Trie();
 			}
 			p = p.filhos[i];
 		}
 		p.fim = true;
+		return true;
 	}
-	
+
 	public static boolean busca(Trie raiz, String chave) {
-		byte[] chaveArr = chave.getBytes(StandardCharsets.UTF_8);
-		int chaveLen = chaveArr.length;
-		
 		Trie p = raiz;
-		for(int nivel = 0; nivel < chaveLen; nivel++) {
-			int i = (chaveArr[nivel] & 0xFF) % N_ALFABETO;
-			if(p.filhos[i] == null) {
+		for(int nivel = 0; nivel < chave.length(); nivel++) {
+			int i = indice(chave.charAt(nivel));
+			if(i == -1 || p.filhos[i] == null) {
 				return false;
 			}
 			p = p.filhos[i];
@@ -97,7 +103,6 @@ public class Trie {
 		
 		
 		
-		long total = Runtime.getRuntime().totalMemory();
 		long used  = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
 		
 		System.out.println("Memória usada:"+used);

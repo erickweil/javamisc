@@ -1,5 +1,8 @@
 package br.erickweil.estruturas;
 
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 public class ListaEncadeadaAula {
 
     public static class Elemento {
@@ -50,6 +53,7 @@ public class ListaEncadeadaAula {
     }
 
     public String removeFirst() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         String ret = inicio.valor;
         if(size() == 1) {
             clear();
@@ -61,6 +65,7 @@ public class ListaEncadeadaAula {
     }
 
     public String remove(int indice) {
+        verificarIndice(indice);
         if(indice == 0) {
             return removeFirst();
         } else {
@@ -96,24 +101,26 @@ public class ListaEncadeadaAula {
 
 
 
+    // Lança uma exceção se o índice não existe na lista, assim como o ArrayList e LinkedList do Java
+    private void verificarIndice(int indice) {
+        if(indice < 0 || indice >= tamanho) {
+            throw new IndexOutOfBoundsException("Índice: "+indice+", Tamanho: "+tamanho);
+        }
+    }
+
     private Elemento getElemento(int indice) {
+        verificarIndice(indice);
         Elemento atual = inicio;
-        int contador = 0;
-        while(atual != null) {
-            if(contador == indice) {
-                return atual;
-            }
-            contador++;
+        for(int contador = 0; contador < indice; contador++) {
             atual = atual.prox;
         }
-        System.err.println("Não encontrado");
-        return null;
+        return atual;
     }
 
     public boolean contains(String valor) {
         Elemento atual = inicio;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 return true;
             }
             atual = atual.prox;
@@ -125,7 +132,7 @@ public class ListaEncadeadaAula {
         Elemento atual = inicio;
         int contador = 0;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 return contador;
             }
             contador++;
@@ -139,7 +146,7 @@ public class ListaEncadeadaAula {
         int contador = 0;
         int pos = -1;
         while(atual != null) {
-            if(atual.valor.equals(valor))  {
+            if(Objects.equals(atual.valor, valor))  {
                 pos = contador;
             }
             contador++;
@@ -153,10 +160,12 @@ public class ListaEncadeadaAula {
     }
 
     public String getFirst() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         return inicio.valor;
     }
 
     public String getLast() {
+        if(isEmpty()) throw new NoSuchElementException("Lista vazia");
         return fim.valor;
     }
 

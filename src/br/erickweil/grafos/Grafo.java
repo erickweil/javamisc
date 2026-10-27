@@ -35,19 +35,19 @@ public abstract class Grafo<T> implements Iterable<Grafo.GrafoVertice<T>> {
 		System.out.println("Vertices:"+nVertices+" Conexoes:"+nConexoes);
 	}
 	
-	public void depthFirstSearch(int inicio, int objetivo) {		
+	public boolean depthFirstSearch(int inicio, int objetivo) {
 		for(GrafoVertice<T> v : this) {
 			v.setEstado(INICIAL);
 		}
-		
-		depthFirstVisit(getVertice(inicio), getVertice(objetivo));
+
+		return depthFirstVisit(getVertice(inicio), getVertice(objetivo));
 	}
 	
 	private boolean depthFirstVisit(GrafoVertice<T> vert, GrafoVertice<T> objetivo) {
 		vert.setEstado(EXPLORADO);
 		//System.out.println(vert);
 		
-		if(vert == objetivo) return true;
+		if(vert.equals(objetivo)) return true;
 
 		for(GrafoVertice<T> conn : vert) {
 			if(conn.getEstado() == INICIAL)
@@ -76,6 +76,6 @@ public abstract class Grafo<T> implements Iterable<Grafo.GrafoVertice<T>> {
 		
 		graph.printar();
 		
-		graph.depthFirstSearch(v3, v0);
+		System.out.println("Existe caminho de v3 até v0? "+graph.depthFirstSearch(v3, v0));
 	}
 }

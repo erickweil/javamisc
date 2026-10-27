@@ -8,14 +8,15 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -111,7 +112,7 @@ public class DesenharReferenciasObjeto {
 				System.out.println("Cole isto na página:");
 				System.out.println(DOT);
 			} else {
-				String content = URLEncoder.encode(DOT, Charset.defaultCharset());
+				String content = URLEncoder.encode(DOT, StandardCharsets.UTF_8);
 				content = content.replace("+","%20");
 				desktop.browse(new URI("https://dreampuf.github.io/GraphvizOnline/#"+content));
 			}
@@ -138,8 +139,6 @@ public class DesenharReferenciasObjeto {
 		}
 		
 		public String getLabel() {
-			String n = nome.isBlank() ? "" : "<"+nome+">"+nome;
-			
 			if(ref != null) {
 				return "<"+nome+">"+nome;
 			} else {
@@ -210,7 +209,9 @@ public class DesenharReferenciasObjeto {
 	public DesenharReferenciasObjeto(Object objeto) {
 		this.objeto = objeto;
 		
-		this.primeiro = analisarObjeto(objeto, new HashMap<>(), new HashMap<>());
+		// IdentityHashMap compara com == em vez de equals: dois objetos diferentes com o mesmo
+		// conteúdo (ex: duas new String("oi")) precisam aparecer como dois objetos no diagrama
+		this.primeiro = analisarObjeto(objeto, new HashMap<>(), new IdentityHashMap<>());
 	}
 	
 	public String gerarDOT() {
@@ -269,11 +270,17 @@ public class DesenharReferenciasObjeto {
 	        	Field f = fields.get(i);
 	
 	        	Object f_value = null;
+	        	String f_texto;
 	        	try {
-	        	f_value = f.get(obj);
-	        	} catch (Exception e) {}
-	        	
-	        	desObj.atributos[i] = new DesenharAtributo(f.getName(),""+f_value);
+	        		// Permite ler atributos private. Falha (sem lançar exceção) em classes internas do Java
+	        		f.trySetAccessible();
+	        		f_value = f.get(obj);
+	        		f_texto = ""+f_value;
+	        	} catch (Exception e) {
+	        		f_texto = "?"; // Não foi possível ler o valor
+	        	}
+
+	        	desObj.atributos[i] = new DesenharAtributo(f.getName(),f_texto);
 	        	if(!f.getType().isPrimitive() && f.getType() != String.class) {
 	        		desObj.atributos[i].ref = analisarObjeto(f_value,classesCount,visitados);
 	        	}
@@ -288,7 +295,10 @@ public class DesenharReferenciasObjeto {
 	}
 	
 	public static List<Field> getAllFields(List<Field> fields, Class<?> type) {
-	    fields.addAll(Arrays.asList(type.getDeclaredFields()));
+	    // Atributos static pertencem à classe e não ao objeto, então não entram no diagrama
+	    for(Field f : type.getDeclaredFields()) {
+	    	if(!Modifier.isStatic(f.getModifiers())) fields.add(f);
+	    }
 
 	    if (type.getSuperclass() != null) {
 	        getAllFields(fields, type.getSuperclass());

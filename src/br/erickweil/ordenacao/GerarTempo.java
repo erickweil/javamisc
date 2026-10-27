@@ -41,7 +41,7 @@ public class GerarTempo {
 		int iter = Integer.parseInt(scan.nextLine());
 		
 		System.out.printf("%s\t%s\n","ITER","MS");
-		for(int i = 1;i < iter;i++) {
+		for(int i = 1;i <= iter;i++) {
 			testar(i * 1000, qual);
 		}
 	}
@@ -53,13 +53,14 @@ public class GerarTempo {
         long tempoInicio = System.nanoTime();
         
         ord.ordenar(numeros);
-        
+
+        // Mede antes de checar a ordem, para o tempo da checagem não entrar na medição
+        long tempoFim = System.nanoTime();
+
         if(!checarOrdem(numeros)) {
         	System.out.println("Não ficou em ordem:");
         	WeilArrays.printar(numeros);
         }
-        
-        long tempoFim = System.nanoTime();
         
         double tempoDiff = (tempoFim - tempoInicio)/1000000.0;
         System.out.printf("%d\t%.2f\n",n,tempoDiff);

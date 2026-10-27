@@ -28,6 +28,7 @@ public class BucketSort implements Ordenador {
 	}
 
 	public static void bucketSort(int[] array, int n) {
+		if (array.length == 0) return; // Nada para ordenar (e não existe máximo nem mínimo)
 
 		// Pega o elemento máximo e mínnimo do array
 		double max = Arrays.stream(array).max().getAsInt();

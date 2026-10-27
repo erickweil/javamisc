@@ -9,7 +9,7 @@ public class LerArquivo {
 	@FunctionalInterface
 	public static interface LerArquivoListener {
 		/**
-		 * Retorne falso para parar de ler o arquivo
+		 * Retorne verdadeiro para parar de ler o arquivo
 		*/
 		boolean leuLinha(String linha);
 	}

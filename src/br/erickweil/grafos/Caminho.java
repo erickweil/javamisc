@@ -114,7 +114,7 @@ public class Caminho implements WeilGraficos.Callback {
 	ListaEncadeada<ListaEncadeada<Integer>> filaVisita;
 	Set<Integer> visitados;
 	int[] direcoes = {0,-1, 1,0, 0,1, -1,0};
-	int objetivo;
+	int objetivo = -1;
 	boolean achou = false;
 	boolean depthFirst = false;
 	private boolean simulateVisitStep() {

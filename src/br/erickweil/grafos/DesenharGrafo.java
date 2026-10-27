@@ -102,21 +102,21 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 					int index = y*w+x;
 					var v = grafo.criarVertice(new PhysicalVertice<String>(new Vector2(px, py),""+index));
 				
-					if(new Random().nextDouble() > 0.5) {
+					//if(new Random().nextDouble() > 0.5) {
 						if(y > 0) {
 							grafo.conectar((y-1)*w+x, v);
 						}
-					}
-					if(new Random().nextDouble() > 0.5) {
+					//}
+					//if(new Random().nextDouble() > 0.5) {
 						if(x > 0) {
 							grafo.conectar(y*w+(x-1), v);
 						}
-					}
-					if(new Random().nextDouble() > 0.5) {
-						if(y > 0 && x > 0) {
-							grafo.conectar((y-1)*w+(x-1), v);
-						}
-					}
+					//}
+					//if(new Random().nextDouble() > 0.5) {
+					//	if(y > 0 && x > 0) {
+					//		grafo.conectar((y-1)*w+(x-1), v);
+					//	}
+					//}
 					
 				}
 			}
@@ -242,7 +242,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	private boolean simulateVisitStep() {
 		// A ideia é guardar no INÍCIO da fila o caminho de cada vertice expandido
 
-		if(filaVisita.isEmpty()) return true;
+		// Fila vazia: todos os caminhos foram explorados e o objetivo é inalcançável
+		if(filaVisita.isEmpty()) return false;
 
 		// Remove o primeiro caminho da fila.
 		var caminho = filaVisita.removeFirst();
@@ -274,7 +275,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	@Override
 	public void onClick(int x, int y, int button) {
 
-		if(achou) {
+		// Recomeça se terminou a busca, encontrando ou não o objetivo
+		if(achou || (filaVisita != null && filaVisita.isEmpty())) {
 			filaVisita = null;
 			objetivo = null;
 			achou = false;

@@ -7,16 +7,17 @@ public class Pilha {
 	public int[] array;
 	public int topo;
 	
-	public Pilha(int capacide) {
-		array = new int[capacide];
+	public Pilha(int capacidade) {
+		array = new int[capacidade];
 		topo = -1;
 	}
-	
+
 	/**
 	 * soma 1 à topo e o array recebe o valor na posição topo
 	 * @param valor Valor que será inserido
 	 */
 	public void push(int valor) {
+		if(size() == array.length) throw new IllegalStateException("Pilha cheia");
 		topo++;
 		array[topo] = valor;
 	}
@@ -26,6 +27,7 @@ public class Pilha {
 	 * então subtrai 1 de topo, e retorna a variável temporária
 	 */
 	public int pop() {
+		if(isEmpty()) throw new IllegalStateException("Pilha vazia");
 		int temp = array[topo];
 		array[topo] = 0; // ISSO NÃO É NECESSÁRIO!!
 		topo--;
@@ -44,6 +46,7 @@ public class Pilha {
 	
 	// top(): retorna o elemento na posição topo em array
 	public int peek() {
+		if(isEmpty()) throw new IllegalStateException("Pilha vazia");
 		return array[topo];
 	}
 	

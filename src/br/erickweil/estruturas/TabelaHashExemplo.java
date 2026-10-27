@@ -27,12 +27,21 @@ public class TabelaHashExemplo
             System.out.println("O índice é:"+indice);
             
             // ENQUANTO NÃO ACHAR UM ESPAÇO VAZIO SOMA 1
-            while(chaves[indice] != null 
+            // (desistindo depois de olhar todas as posições, senão a tabela cheia trava em um loop infinito)
+            int tentativas = 0;
+            while(chaves[indice] != null
             && !chaves[indice].equals(chave)
+            && tentativas < chaves.length
             ) {
                 indice = (indice + 1) % 10;
+                tentativas++;
             }
-            
+
+            if(tentativas == chaves.length) {
+                System.out.println("A tabela está cheia, não foi possível inserir '"+chave+"'");
+                continue;
+            }
+
             chaves[indice] = chave;
             valores[indice] = valor;
             

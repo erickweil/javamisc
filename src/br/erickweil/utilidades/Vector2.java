@@ -60,6 +60,7 @@ public class Vector2 {
 	
 	public Vector2 normalize() {
 		float mag = this.magnitude();
+		if(mag == 0) return this; // O vetor zero não tem direção, dividir daria NaN
 		this.x /= mag;
 		this.y /= mag;
 		return this;

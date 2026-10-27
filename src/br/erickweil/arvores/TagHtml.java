@@ -11,7 +11,7 @@ public class TagHtml {
 	
 	public String tagPrint(boolean fechando) {
 		if(fechando)
-		return String.format("<%s/>",nome);
+		return String.format("</%s>",nome);
 		else
 		return String.format("<%s>",nome);
 	}

@@ -2,6 +2,7 @@ package br.erickweil.grafos;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -84,6 +85,7 @@ public class GrafoAula {
             caminho.add(inicio);
 
             caminhos.add(caminho);
+            visitados.add(inicio);
             // Remove o primeiro caminho e expande as conexões re-inserindo
             // os novos caminhos;
             while(!caminhos.isEmpty()) {
@@ -94,10 +96,11 @@ public class GrafoAula {
                     return caminho;
                 }
 
-                visitados.add(ultimo);
                 for(Vertice conn : ultimo.conexoes) {
                     if(visitados.contains(conn)) continue;
-                    LinkedList<Vertice> novoCaminho = (LinkedList<Vertice>)caminho.clone();
+                    // Marca como visitado ao entrar na fila, assim o mesmo vértice não é enfileirado várias vezes
+                    visitados.add(conn);
+                    LinkedList<Vertice> novoCaminho = new LinkedList<>(caminho);
                     novoCaminho.add(conn);
                     caminhos.addLast(novoCaminho);
                 }
@@ -113,7 +116,9 @@ public class GrafoAula {
         
         public Vertice(String nome) {
             this.nome = nome;
-            this.conexoes = new HashSet<>();
+            // LinkedHashSet mantém a ordem em que as conexões foram adicionadas,
+            // assim as buscas percorrem os vértices sempre na mesma ordem
+            this.conexoes = new LinkedHashSet<>();
         }
     }
 
@@ -141,9 +146,13 @@ public class GrafoAula {
         grafo.printar();
 
         System.out.println("Encontrando caminho de S até G");
-        List<Vertice> caminho = grafo.buscaEmLargura(E, S);
-        for(Vertice v : caminho) {
-            System.out.println(v.nome);
+        List<Vertice> caminho = grafo.buscaEmLargura(S, G);
+        if(caminho == null) {
+            System.out.println("Não existe caminho");
+        } else {
+            for(Vertice v : caminho) {
+                System.out.println(v.nome);
+            }
         }
         //boolean achou = grafo.buscaProfundidade(S,E,new HashSet<Vertice>());
         //System.out.println(achou ? "Achou" : "Não Achou");

@@ -33,9 +33,11 @@ public class MergeSort implements Ordenador {
 	
 	public void merge(int[] vetor, int inicio, int meio, int fim) {
 		// transfere os elementos entre inicio e fim para um array auxiliar = aux.
-		int[] aux = new int[vetor.length];
+		// aux tem só o tamanho do trecho (e não do vetor inteiro), então aux[i - inicio] guarda vetor[i].
+		// Alocar o vetor inteiro a cada merge deixava o algoritmo O(n²).
+		int[] aux = new int[fim - inicio + 1];
 		for (int i = inicio; i <= fim; i++) {
-			aux[i] = vetor[i];
+			aux[i - inicio] = vetor[i];
 		}
 
 		/**
@@ -55,11 +57,11 @@ public class MergeSort implements Ordenador {
 		 */
 
 		while (i <= meio && j <= fim) {
-			if (aux[i] <= aux[j]) {
-				vetor[k] = aux[i];
+			if (aux[i - inicio] <= aux[j - inicio]) {
+				vetor[k] = aux[i - inicio];
 				i++;
 			} else {
-				vetor[k] = aux[j];
+				vetor[k] = aux[j - inicio];
 				j++;
 			}
 			k++;
@@ -73,14 +75,14 @@ public class MergeSort implements Ordenador {
 
 		// se a metade inicial não foi toda consumida, faz o append.
 		while (i <= meio) {
-			vetor[k] = aux[i];
+			vetor[k] = aux[i - inicio];
 			i++;
 			k++;
 		}
 
 		// se a metade final não foi toda consumida, faz o append.
 		while (j <= fim) {
-			vetor[k] = aux[j];
+			vetor[k] = aux[j - inicio];
 			j++;
 			k++;
 		}

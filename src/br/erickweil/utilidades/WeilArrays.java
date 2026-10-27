@@ -5,7 +5,7 @@ import java.util.Random;
 public class WeilArrays {
     
 	/**
-	 * Inicia o array com valores aleatórios entre 0 e maximo
+	 * Inicia o array com valores aleatórios entre 0 e maximo-1
 	 */
 	public static void iniciarAleatorio(int[] arr,int maximo) {
 		Random rdn = new Random();
@@ -17,7 +17,9 @@ public class WeilArrays {
 	}
 
 	/**
-	 * Inicia o array com valores aleatórios entre 0 e maximo, sem repetir
+	 * Inicia o array com valores aleatórios entre 0 e maximo-1, sem repetir.
+	 * Atenção: se maximo for menor que o tamanho do array não há valores suficientes,
+	 * então depois de 100 tentativas o valor é aceito mesmo repetido.
 	 */
 	public static void iniciarAleatorioUnico(int[] arr,int maximo) {
 		Random rdn = new Random();
@@ -55,13 +57,12 @@ public class WeilArrays {
     public static void printar(int[] arr,int len) {
     	
     	System.out.print("[");
-    	System.out.print(arr[0]);
-        for(int k =1;k < len; k++)
+        for(int k =0;k < len; k++)
         {
-        	System.out.print(", ");
+        	if(k > 0) System.out.print(", ");
             System.out.print(arr[k]);
         }
-        if(arr.length > len) System.out.print(", +"+(arr.length - len)+" elementos...");
+        if(arr.length > len) System.out.print((len > 0 ? ", " : "")+"+"+(arr.length - len)+" elementos...");
         System.out.println("]"); // ln para Pular linha para terminar
     }
 }

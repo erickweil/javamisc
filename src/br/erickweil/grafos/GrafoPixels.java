@@ -1,6 +1,8 @@
 package br.erickweil.grafos;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.stream.Stream;
 import java.util.NoSuchElementException;
 
 public class GrafoPixels extends Grafo<GrafoPixels.RGBPixel> {
@@ -54,9 +56,9 @@ public class GrafoPixels extends Grafo<GrafoPixels.RGBPixel> {
     public static BufferedImage gerarImagem(int w, int h) {
         var image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 
-        // Preenchendo a imagem com um padrão (exemplo: degradê azul)
-        for (int y = 0; y < 200; y++) {
-            for (int x = 0; x < 200; x++) {
+        // Preenchendo a imagem com pixels pretos e brancos aleatórios
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 // aleatoriamente será preto ou branco
                 boolean isBlack = Math.random() > 0.5;
                 int rgb = isBlack ? 0x000000 : 0xFFFFFF;
@@ -77,52 +79,33 @@ public class GrafoPixels extends Grafo<GrafoPixels.RGBPixel> {
             this.y = y;
         }
 
+        // Vizinho na posição (vx, vy), ou null se estiver fora da imagem ou for preto (parede)
+        private GrafoVertice<RGBPixel> vizinho(int vx, int vy) {
+            if (vx < 0 || vx >= grafo.width || vy < 0 || vy >= grafo.height) return null;
+            var v = grafo.getVertice(vy * grafo.width + vx);
+            if (v.getValor().getBlue() == 0) return null;
+            return v;
+        }
+
         @Override
-        public Iterator<GrafoVertice<RGBPixel>> iterator() {            
-            var v0 = grafo.getVertice(y * grafo.width + (x-1));
-            var v1 = grafo.getVertice(y * grafo.width + (x+1));
-            var v2 = grafo.getVertice((y-1) * grafo.width + x);
-            var v3 = grafo.getVertice((y+1) * grafo.width + x);
+        public Iterator<GrafoVertice<RGBPixel>> iterator() {
+            // Atravessa os vizinhos da esquerda, direita, cima e baixo
+            return Stream.of(vizinho(x-1, y), vizinho(x+1, y), vizinho(x, y-1), vizinho(x, y+1))
+                .filter(Objects::nonNull)
+                .iterator();
+        }
 
-            if(v0.getValor().getBlue() == 0) v0 = null;
-            if(v1.getValor().getBlue() == 0) v1 = null;
-            if(v2.getValor().getBlue() == 0) v2 = null;
-            if(v3.getValor().getBlue() == 0) v3 = null;
+        // Cada getVertice cria um novo objeto, então dois vértices são iguais se apontam para o mesmo pixel
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (!(obj instanceof PixelVertice other)) return false;
+            return grafo == other.grafo && x == other.x && y == other.y;
+        }
 
-            if(v2 == null) { v2 = v3; v3 = null;}
-            if(v1 == null) { v1 = v2; v2 = v3; v3 = null;}
-            if(v0 == null) { v0 = v1; v1 = v2; v2 = v3; v3 = null;}
-
-            final var _v0 = v0;
-            final var _v1 = v1;
-            final var _v2 = v2;
-            final var _v3 = v3;
-
-            // Atravessa todos os pixels da imagem
-            return new Iterator<GrafoVertice<RGBPixel>>() {                
-                int index = 0;
-                @Override
-                public boolean hasNext() {
-                    if(index == 0) return _v0 != null;
-                    if(index == 1) return _v1 != null;
-                    if(index == 2) return _v2 != null;
-                    if(index == 3) return _v3 != null;
-                    return false;
-                }
-
-                @Override
-                public GrafoVertice<RGBPixel> next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    
-                    if(index == 0) { index++; return _v0; }
-                    if(index == 1) { index++; return _v1; }
-                    if(index == 2) { index++; return _v2; }
-                    if(index == 3) { index++; return _v3; }
-                    return null;
-                }
-            };
+        @Override
+        public int hashCode() {
+            return y * grafo.width + x;
         }
         @Override
         public RGBPixel getValor() {

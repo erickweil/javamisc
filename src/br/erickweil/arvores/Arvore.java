@@ -38,7 +38,7 @@ public class Arvore {
 	}
 	
 	public static Arvore criarOrdenado(int[] arr, int inicio, int fim) {
-		if(inicio >= fim) return null;
+		if(inicio > fim) return null;
 		
 		int meio = (inicio + fim) / 2;
 		
