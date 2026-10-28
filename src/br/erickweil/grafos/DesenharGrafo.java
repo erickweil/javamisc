@@ -11,7 +11,7 @@ import java.util.Random;
 import br.erickweil.estruturas.ListaEncadeada;
 import br.erickweil.graficos.WeilGraficos;
 import br.erickweil.grafos.Grafo.GrafoVertice;
-import br.erickweil.utilidades.Vector2;
+import br.erickweil.classes.Vector2;
 
 public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	int velocidadeSimulacao = 1;
@@ -24,7 +24,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		
 		public PhysicalVertice(Vector2 pos,T value) {
 			this.value = value;
-			this.pos = new Vector2(pos);
+			this.pos = pos; // Vector2 é imutável, então não precisa copiar
 		}
 
 		public PhysicalVertice(T value) {
@@ -169,18 +169,19 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	int canvasHeight = 0;
 	int canvasFrameCount = 0;
 	@Override
-	public void onDraw(Graphics2D g, int w, int h) {
+	public void onUpdate() {
 		canvasFrameCount++;
 		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
 			if(objetivo != null && filaVisita != null) {
-				// TODO Auto-generated method stub
 				if(simulateVisitStep()) {
 					achou = true;
 				}
-				
 			}
 		}
+	}
 
+	@Override
+	public void onDraw(Graphics2D g, int w, int h) {
 		var caminho = filaVisita == null || filaVisita.isEmpty() ? null : filaVisita.getFirst();
 
 		canvasWidth = w;

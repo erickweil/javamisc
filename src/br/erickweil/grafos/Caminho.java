@@ -47,6 +47,18 @@ public class Caminho implements WeilGraficos.Callback {
 
 	int canvasFrameCount = 0;
 	@Override
+	public void onUpdate() {
+		canvasFrameCount++;
+		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
+			if(objetivo != -1 && filaVisita != null) {
+				if(simulateVisitStep()) {
+					achou = true;
+				}
+			}
+		}
+	}
+
+	@Override
 	public void onDraw(Graphics2D g, int w, int h) {
 		quadw = w / colunas;
 		if(h / linhas < quadw) {
@@ -86,16 +98,6 @@ public class Caminho implements WeilGraficos.Callback {
 		int oy = objetivoy*quadw+quadw2;
 		g.drawLine(ox-quadw4,oy-quadw4,ox+quadw4,oy+quadw4);
 		g.drawLine(ox-quadw4,oy+quadw4,ox+quadw4,oy-quadw4);
-
-		canvasFrameCount++;
-		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
-			if(objetivo != -1 && filaVisita != null) {
-				// TODO Auto-generated method stub
-				if(simulateVisitStep()) {
-					achou = true;
-				}
-			}
-		}
 
 		if(filaVisita != null && !filaVisita.isEmpty()) {
 		var caminho = filaVisita.getFirst();

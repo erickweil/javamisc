@@ -4,7 +4,10 @@ import java.util.Locale;
 /**
  * Vetor imutável de 3 dimensões. Toda operação retorna um novo vetor,
  * o vetor original nunca é alterado.
- * Convenção dos eixos: x para a direita, y para cima e z para fora da tela (RIGHT.cross(UP) == FORWARD).
+ * Convenção dos eixos, igual às coordenadas da tela do Java2D:
+ * x para a direita, y para baixo (por isso UP é (0, -1, 0)) e z para dentro da tela, a profundidade.
+ * Assim um ponto (x, y, z) é desenhado na posição (x, y) da tela, e quanto maior o z mais longe ele está.
+ * Produto vetorial: RIGHT.cross(DOWN) == FORWARD.
  */
 public final class Vector3 {
     public final double x;
@@ -23,12 +26,12 @@ public final class Vector3 {
     // Propriedades estáticas (por serem imutáveis podem ser reutilizadas/compartilhadas sem problemas)
     public static final Vector3 ZERO = new Vector3(0, 0, 0);
     public static final Vector3 ONE = new Vector3(1, 1, 1);
-    public static final Vector3 UP = new Vector3(0, 1, 0);
-    public static final Vector3 DOWN = new Vector3(0, -1, 0);
+    public static final Vector3 UP = new Vector3(0, -1, 0);      // para cima na tela
+    public static final Vector3 DOWN = new Vector3(0, 1, 0);     // para baixo na tela
     public static final Vector3 LEFT = new Vector3(-1, 0, 0);
     public static final Vector3 RIGHT = new Vector3(1, 0, 0);
-    public static final Vector3 FORWARD = new Vector3(0, 0, 1);
-    public static final Vector3 BACKWARD = new Vector3(0, 0, -1);
+    public static final Vector3 FORWARD = new Vector3(0, 0, 1);  // para dentro da tela (mais longe)
+    public static final Vector3 BACKWARD = new Vector3(0, 0, -1); // para fora da tela (mais perto)
 
     /**
      * Soma este vetor com outro, componente a componente.
