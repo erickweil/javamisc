@@ -12,10 +12,10 @@ import br.erickweil.arvores.Arvore;
 import br.erickweil.ordenacao.InsertionSort;
 import br.erickweil.utilidades.WeilArrays;
 
-public class DesenharArvore implements WeilGraficos.Callback{
+public class DesenharArvore extends WeilGraficos{
 
 	public static void main(String[] args) {		
-		WeilGraficos.iniciarGraficos(new DesenharArvore(null),false);
+		new DesenharArvore(null).iniciarGraficos();
 	}
 	
 	public static Arvore gerarNovaArvore() {
@@ -36,13 +36,15 @@ public class DesenharArvore implements WeilGraficos.Callback{
 	Arvore raiz;
 	int size = 20;
 	public DesenharArvore(Arvore raiz) {
+		super("Árvore Binária", 800, 600);
+		keepRedrawing = false; // Só muda ao clicar
 		this.raiz = raiz;
 		
 		if(this.raiz == null) this.raiz = gerarNovaArvore();
 	}
 
 	@Override
-	public void onDraw(Graphics2D g, int w, int h) {
+	public void onDraw(Graphics2D g, double deltaTime) {
 		desenhar(g,raiz,0, 0);
 	}
 

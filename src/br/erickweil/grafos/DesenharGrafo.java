@@ -13,7 +13,7 @@ import br.erickweil.graficos.WeilGraficos;
 import br.erickweil.grafos.Grafo.GrafoVertice;
 import br.erickweil.classes.Vector2;
 
-public class DesenharGrafo<T> implements  WeilGraficos.Callback{
+public class DesenharGrafo<T> extends WeilGraficos{
 	int velocidadeSimulacao = 1;
 	static int qual = 1;
 
@@ -153,7 +153,7 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		}
 
 		if(grafo != null) {
-			WeilGraficos.iniciarGraficos(new DesenharGrafo<>(grafo),true);
+			new DesenharGrafo<>(grafo).iniciarGraficos();
 		}
 	}
 	
@@ -161,31 +161,25 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 	Grafo<PhysicalVertice<T>> physGraph;
 
 	public DesenharGrafo(Grafo<PhysicalVertice<T>> physGraph) {
+		super("Grafo", 800, 600);
 		this.physGraph = physGraph;
 		this.physGraph.printar();
 	}
 
-	int canvasWidth = 0;
-	int canvasHeight = 0;
-	int canvasFrameCount = 0;
 	@Override
-	public void onUpdate() {
-		canvasFrameCount++;
-		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
+	public void onDraw(Graphics2D g, double deltaTime) {
+		if(velocidadeSimulacao > 0 && (getFrameCount() % velocidadeSimulacao == 0)) {
 			if(objetivo != null && filaVisita != null) {
 				if(simulateVisitStep()) {
 					achou = true;
 				}
 			}
 		}
-	}
 
-	@Override
-	public void onDraw(Graphics2D g, int w, int h) {
 		var caminho = filaVisita == null || filaVisita.isEmpty() ? null : filaVisita.getFirst();
 
-		canvasWidth = w;
-		canvasHeight = h;
+		int w = getWidth();
+		int h = getHeight();
 		// TODO Auto-generated method stub
 		int size = 28;
 		for(var v : physGraph) {			
@@ -298,8 +292,8 @@ public class DesenharGrafo<T> implements  WeilGraficos.Callback{
 		GrafoVertice<PhysicalVertice<T>> minVert = null;
 		for(var v : physGraph) {			
 			Vector2 pos = v.getValor().pos;
-			int vx = (int)(pos.x * canvasWidth);
-			int vy = (int)(pos.y * canvasHeight);
+			int vx = (int)(pos.x * getWidth());
+			int vy = (int)(pos.y * getHeight());
 
 			int dist = (vx - x)*(vx - x) + (vy - y)*(vy - y);
 			if(minDist == -1 || dist < minDist) {

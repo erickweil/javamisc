@@ -12,11 +12,11 @@ import java.util.Set;
 import br.erickweil.estruturas.ListaEncadeada;
 import br.erickweil.graficos.WeilGraficos;
 
-public class Caminho implements WeilGraficos.Callback {
+public class Caminho extends WeilGraficos {
 	
 	int velocidadeSimulacao = 1;
 	public static void main(String[] args) {
-		WeilGraficos.iniciarGraficos(new Caminho(10,10),true);
+		new Caminho(10,10).iniciarGraficos();
 	}
 
 	public int colunas;
@@ -29,6 +29,7 @@ public class Caminho implements WeilGraficos.Callback {
 	public int objetivoy=5;
 	public List<Integer> caminho;
 	public Caminho(int linhas, int colunas) {
+		super("Caminho", 800, 600);
 		this.colunas = colunas;
 		this.linhas = linhas;
 		this.grade = new int[colunas * linhas];
@@ -45,21 +46,18 @@ public class Caminho implements WeilGraficos.Callback {
 		}
 	}
 
-	int canvasFrameCount = 0;
 	@Override
-	public void onUpdate() {
-		canvasFrameCount++;
-		if(velocidadeSimulacao > 0 && (canvasFrameCount % velocidadeSimulacao == 0)) {
+	public void onDraw(Graphics2D g, double deltaTime) {
+		if(velocidadeSimulacao > 0 && (getFrameCount() % velocidadeSimulacao == 0)) {
 			if(objetivo != -1 && filaVisita != null) {
 				if(simulateVisitStep()) {
 					achou = true;
 				}
 			}
 		}
-	}
 
-	@Override
-	public void onDraw(Graphics2D g, int w, int h) {
+		int w = getWidth();
+		int h = getHeight();
 		quadw = w / colunas;
 		if(h / linhas < quadw) {
 			quadw = h / linhas;
