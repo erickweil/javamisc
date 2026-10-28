@@ -19,3 +19,7 @@ Testando Algoritmos de Ordenação
 - br.erickweil.utilidades
 
 Métodos prontos para serem usados que facilitam certas operações comuns, como escrever um array na tela
+
+- br.erickweil.graficos
+
+Desenhar e animar numa janela com o WeilGraficos, veja o [tutorial](src/br/erickweil/graficos/README.md)
